@@ -21,8 +21,8 @@ def getEyes(image):
 
     #Converts to LocalBinaryPatter
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    gray = cv2.resize(gray, (64, 64))
-    hist = desc.describe(gray)
+
+
 
     # loop over the image pyramid
     for resized in pyramid(image, scale=1.5):
@@ -32,12 +32,28 @@ def getEyes(image):
             if window.shape[0] != winH or window.shape[1] != winW:
                 continue
 
+            clone = resized.copy()
+
+
+            cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
+            cv2.imshow("Window", clone)
+
+            crop_img = gray[y:y + winH, x:x + winW]
+            crop_img = cv2.resize(crop_img,(32,32),interpolation = cv2.INTER_AREA)
+            cv2.imshow("cropped", crop_img)
+            cv2.waitKey(0)
+
+            hist = desc.describe(crop_img)
+            # Loads Prediction Model
+            prediction = loaded_model.predict(hist.reshape(1, -1))
+            print(prediction[0])
+
+            cv2.waitKey(0)
+            time.sleep(0.025)
+
             # THIS IS WHERE YOU WOULD PROCESS YOUR WINDOW, SUCH AS APPLYING A
             # MACHINE LEARNING CLASSIFIER TO CLASSIFY THE CONTENTS OF THE
             # WINDOW
-
-
-            prediction = loaded_model.predict(hist.reshape(1, -1))
 
             # display the image and the prediction
             cv2.putText(image, prediction[0], (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
