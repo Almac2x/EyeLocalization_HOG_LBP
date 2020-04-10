@@ -10,9 +10,11 @@ import argparse
 import imutils
 import pickle
 import cv2
-import os
+import os,time,pickle,Eye_Detection
 
 # construct the argument parser and parse the arguments
+from pyimagesearch.helpers import pyramid, sliding_window
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True,
 	help="path to input image")
@@ -103,9 +105,12 @@ for i in range(0, detections.shape[2]):
 		cv2.putText(image, text, (startX, y),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
-#Crops the Face)
+#Crops the Face
 	roi = image[startY:endY,startX:endX]
 
+#[TEMPORARY] please put this in Main.py
+Eye = Eye_Detection.getEyes(roi)
+
 # show the output image
-cv2.imshow("Image", roi)
+cv2.imshow("Image", image)
 cv2.waitKey(0)
