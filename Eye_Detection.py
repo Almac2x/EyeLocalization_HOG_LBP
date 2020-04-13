@@ -40,13 +40,15 @@ def getEyes(image):
 
             crop_img = gray[y:y + winH, x:x + winW]
             crop_img = cv2.resize(crop_img,(32,32),interpolation = cv2.INTER_AREA)
-            cv2.imshow("cropped", crop_img)
-            cv2.waitKey(0)
+
 
             hist = desc.describe(crop_img)
             # Loads Prediction Model
             prediction = loaded_model.predict(hist.reshape(1, -1))
             print(prediction[0])
+
+            cv2.imshow("cropped", crop_img)
+            cv2.waitKey(0)
 
             cv2.waitKey(0)
             time.sleep(0.025)
