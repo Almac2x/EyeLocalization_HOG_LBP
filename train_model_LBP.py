@@ -67,8 +67,8 @@ kf = KFold(n_splits=2, random_state=None, shuffle=False)
 i=0
 for train_index, test_index in kf.split(data):
     print("TRAIN:", train_index, "TEST:", test_index)
-    x_train, x_test = data[train_index], data[test_index]
-    y_train, y_test = labels[train_index], labels[test_index]
+    x_train, x_test = np.array(data)[train_index.astype(int)], np.array(data)[test_index.astype(int)]
+    y_train, y_test = np.array(labels)[train_index.astype(int)], np.array(labels)[test_index.astype(int)]
     i = i+1
     print("KFold: "+i)
     model.fit(x_train,y_train)
@@ -76,8 +76,11 @@ for train_index, test_index in kf.split(data):
     print('Test Accuracy of SVC = ', round(model.score(DataTest, LabelTest), 4))
 
     # Saves the model as a pickle
-    filename = str(args["name"]) + ".sav"
-    pickle.dump(model, open(filename, 'wb'))
+    # filename = str(args["name"])+str(i) + ".sav"
+    # pickle.dump(model, open(filename, 'wb'))
+
+    with open('/Eye_Detection_Model/' + filename, 'wb') as f:
+        pickle.dump(model, f)
 
 
 # Plots the model
