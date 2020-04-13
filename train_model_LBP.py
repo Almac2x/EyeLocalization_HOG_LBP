@@ -55,31 +55,39 @@ DataTrain, DataTest, LabelTrain, LabelTest = train_test_split(data, labels, test
 i = 0
 for Cross_Score in cross_val_score(model, data, labels, cv=3):
     i = i + 1
-    print(i)
+    print(Cross_Score)
 
 # Trains the model
-model.fit(DataTrain, LabelTrain)
-predictions = model.predict(DataTest)
+#model.fit(DataTrain, LabelTrain)
+#predictions = model.predict(DataTest)
 
 # KFold
-kf = KFold(n_splits=2, random_state=None, shuffle=True)
+kf = KFold(n_splits=2, random_state=None, shuffle=False)
 
+i=0
 for train_index, test_index in kf.split(data):
     print("TRAIN:", train_index, "TEST:", test_index)
     x_train, x_test = data[train_index], data[test_index]
     y_train, y_test = labels[train_index], labels[test_index]
+    i = i+1
+    print("KFold: "+i)
+    model.fit(x_train,y_train)
+    # Check the score of the Model
+    print('Test Accuracy of SVC = ', round(model.score(DataTest, LabelTest), 4))
+
+    # Saves the model as a pickle
+    filename = str(args["name"]) + ".sav"
+    pickle.dump(model, open(filename, 'wb'))
+
 
 # Plots the model
-plt.scatter(LabelTest, predictions)
-plt.xlabel("True Value")
-plt.ylabel("Predictions")
-plt.show()
-# Check the score of the Model
-print('Test Accuracy of SVC = ', round(model.score(DataTest, LabelTest), 4))
+#plt.scatter(LabelTest, predictions)
+#plt.xlabel("True Value")
+#plt.ylabel("Predictions")
+#plt.show()
 
-# Saves the model as a pickle
-filename = str(args["name"]) + ".sav"
-pickle.dump(model, open(filename, 'wb'))
+
+
 
 # loop over the testing images
 for imagePath in paths.list_images(args["testing"]):
