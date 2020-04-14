@@ -18,7 +18,7 @@ def getEyes(image):
     # initialize the local binary patterns descriptor along with
 
     # load the model from disk
-    Model_Path = "Eye_Detection_Model/finalized_model.sav"
+    Model_Path = "Eye_Detection_Model/LBP_Oversize_Dataset_0.8738 _KF#3.sav"
     loaded_model = pickle.load(open(Model_Path, 'rb'))
 
     #Converts to LocalBinaryPatter
@@ -41,13 +41,20 @@ def getEyes(image):
             cv2.imshow("Window", clone)
 
             crop_img = gray[y:y + winH, x:x + winW]
-            crop_img = cv2.resize(crop_img,(32,32),interpolation = cv2.INTER_AREA)
+            crop_img = cv2.resize(crop_img,(64,64),interpolation = cv2.INTER_AREA)
 
 
-            hist = desc.describe(crop_img)
+            hist = desc.describe(crop_img,"Frame")
             # Loads Prediction Model
             prediction = loaded_model.predict(hist.reshape(1, -1))
+
             print(prediction[0])
+
+            # display the image and the prediction
+            XY = (x, y + winH)
+            cv2.putText(image, prediction[0], XY, cv2.FONT_HERSHEY_SIMPLEX,
+                        1.0, (0, 0, 255), 3)
+
 
             cv2.imshow("cropped", crop_img)
             cv2.waitKey(0)
@@ -59,9 +66,7 @@ def getEyes(image):
             # MACHINE LEARNING CLASSIFIER TO CLASSIFY THE CONTENTS OF THE
             # WINDOW
 
-            # display the image and the prediction
-            cv2.putText(image, prediction[0], (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
-                        1.0, (0, 0, 255), 3)
+
 
 
 
