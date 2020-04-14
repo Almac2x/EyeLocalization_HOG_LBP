@@ -1,3 +1,5 @@
+#Website From: https://scikit-image.org/docs/dev/auto_examples/features_detection/plot_hog.html
+#Website to Reference: https://www.pyimagesearch.com/2014/11/10/histogram-oriented-gradients-object-detection/
 import matplotlib.pyplot as plt
 from skimage.feature import hog
 from skimage import data, exposure

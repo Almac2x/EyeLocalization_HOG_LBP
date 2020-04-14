@@ -55,6 +55,7 @@ DataTrain, DataTest, LabelTrain, LabelTest = train_test_split(data, labels, test
 i = 0
 for Cross_Score in cross_val_score(model, data, labels, cv=3):
     i = i + 1
+    print("KFold: " + str(i))
     print(Cross_Score)
 
 # Trains the model
@@ -70,40 +71,42 @@ for train_index, test_index in kf.split(data):
     x_train, x_test = np.array(data)[train_index.astype(int)], np.array(data)[test_index.astype(int)]
     y_train, y_test = np.array(labels)[train_index.astype(int)], np.array(labels)[test_index.astype(int)]
     i = i+1
-    print("KFold: "+i)
+    print("KFold: "+ str(i))
     model.fit(x_train,y_train)
     # Check the score of the Model
     print('Test Accuracy of SVC = ', round(model.score(DataTest, LabelTest), 4))
 
     # Saves the model as a pickle
-    # filename = str(args["name"])+str(i) + ".sav"
+    filename = str(args["name"]) + str(i) + ".sav"
     # pickle.dump(model, open(filename, 'wb'))
 
-    with open('/Eye_Detection_Model/' + filename, 'wb') as f:
+    with open('Eye_Detection_Model/' + filename, 'wb') as f:
         pickle.dump(model, f)
 
+    # Plots the model
+    #plt.scatter(y_test, model.predict(x_test))
+    #plt.xlabel("True Value")
+    #plt.ylabel("Predictions")
+    #plt.show()
 
-# Plots the model
-#plt.scatter(LabelTest, predictions)
-#plt.xlabel("True Value")
-#plt.ylabel("Predictions")
-#plt.show()
+
+
 
 
 
 
 # loop over the testing images
-for imagePath in paths.list_images(args["testing"]):
-    # load the image, convert it to grayscale, describe it,
-    # and classify it
-    image = cv2.imread(imagePath)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imshow("Pli", gray)
-    hist = desc.describe(gray)
-    prediction = model.predict(hist.reshape(1, -1))
-
-    # display the image and the prediction
-    cv2.putText(image, prediction[0], (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
-                1.0, (0, 0, 255), 3)
-    cv2.imshow("Image", image)
-    cv2.waitKey(0)
+# for imagePath in paths.list_images(args["testing"]):
+#     # load the image, convert it to grayscale, describe it,
+#     # and classify it
+#     image = cv2.imread(imagePath)
+#     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#     cv2.imshow("Pli", gray)
+#     hist = desc.describe(gray)
+#     prediction = model.predict(hist.reshape(1, -1))
+#
+#     # display the image and the prediction
+#     cv2.putText(image, prediction[0], (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
+#                 1.0, (0, 0, 255), 3)
+#     cv2.imshow("Image", image)
+#     cv2.waitKey(0)

@@ -1,3 +1,5 @@
+#Website https://www.pyimagesearch.com/2015/03/23/sliding-windows-for-object-detection-with-python-and-opencv/
+
 import cv2,pickle,argparse,time
 from Feature_Descriptors.LBP import LBP
 from Feature_Descriptors.localbinarypatterns import LocalBinaryPatterns

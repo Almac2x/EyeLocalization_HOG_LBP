@@ -1,3 +1,5 @@
+#Website From: https://scikit-image.org/docs/dev/auto_examples/features_detection/plot_local_binary_pattern.html
+# Website From: https://www.pyimagesearch.com/2015/12/07/local-binary-patterns-with-python-opencv/
 import cv2, os
 import numpy as np
 import time
