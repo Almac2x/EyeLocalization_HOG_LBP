@@ -19,7 +19,7 @@ def getEyes(image):
     # initialize the local binary patterns descriptor along with
 
     # load the model from disk
-    Model_Path = "Eye_Detection_Model/LBP_Oversize_Datasets_0.8676 _KF#3.sav"
+    Model_Path = "Eye_Detection_Model/Aptina/LBP_Aptina_0.9864 _KF#2.sav"
     loaded_model = pickle.load(open(Model_Path, 'rb'))
 
     # Converts to LocalBinaryPatter
@@ -39,16 +39,28 @@ def getEyes(image):
             cv2.imshow("Window", clone)
 
             crop_img = gray[y:y + winH, x:x + winW]
-            crop_img = cv2.resize(crop_img, (64, 64), interpolation=cv2.INTER_AREA)
+
 
             hist = desc.describe(crop_img, "Frame")
             # Loads Prediction Model
-            prediction = loaded_model.predict(hist.reshape(1, -1))
+            reshape_lbp = hist.reshape(1,-1)
+            prediction = loaded_model.predict(reshape_lbp)
 
-            confidence_level = loaded_model.decision_function(hist.reshape(1, -1))
+            confidence_level = loaded_model.decision_function(reshape_lbp)
 
-            print(prediction[0])
-            print("Confidence Level: {}".format(loaded_model.decision_function(hist.reshape(1, -1))))
+
+            #Eyes
+            #if eye = Eye_close:
+            # Eyes.append
+
+            #Confidence Level
+            print(prediction)
+
+            print("Confidence Level: {}".format(loaded_model.decision_function(reshape_lbp)))
+
+
+
+
 
             # display the image and the prediction
             # XY = (x, y + winH)
@@ -58,8 +70,6 @@ def getEyes(image):
             cv2.imshow("cropped", crop_img)
             cv2.waitKey(0)
 
-            cv2.waitKey(0)
-            time.sleep(0.025)
 
             # THIS IS WHERE YOU WOULD PROCESS YOUR WINDOW, SUCH AS APPLYING A
             # MACHINE LEARNING CLASSIFIER TO CLASSIFY THE CONTENTS OF THE

@@ -47,6 +47,7 @@ for imagePath in paths.list_images(args["training"]):
     labels.append(imagePath.split(os.path.sep)[-2])
     data.append(hist)
 
+
 # train a Linear SVM on the data
 model = LinearSVC(C=100.0, random_state=42)
 # Split up data into randomized training and test sets
@@ -56,11 +57,11 @@ DataTrain, DataTest, LabelTrain, LabelTest = train_test_split(data, labels, test
 # Cross Validation Score
 # Cross_Score = cross_val_score(model,data,labels,cv=3)
 
-i = 0
-for Cross_Score in cross_val_score(model, data, labels, cv=3):
-    i = i + 1
-    print("KFold: " + str(i))
-    print("Cross_Validation Score: " + str(Cross_Score))
+#i = 0
+#for Cross_Score in cross_val_score(model, data, labels, cv=3):
+#    i = i + 1
+#    print("KFold: " + str(i))
+#    print("Cross_Validation Score: " + str(Cross_Score))
 
 
 # Trains the model
@@ -74,7 +75,7 @@ Cross_Validation_Score = []
 i = 0
 for train_index, test_index in kf.split(data):
     print("*****************************************")
-    print("TRAIN:", train_index, "TEST:", test_index)
+    #print("TRAIN:", train_index, "TEST:", test_index)
     x_train, x_test = np.array(data)[train_index.astype(int)], np.array(data)[test_index.astype(int)]
     y_train, y_test = np.array(labels)[train_index.astype(int)], np.array(labels)[test_index.astype(int)]
     i = i + 1
@@ -91,7 +92,17 @@ for train_index, test_index in kf.split(data):
     with open('Eye_Detection_Model/' + filename, 'wb') as f:
         pickle.dump(model, f)
 
+    image = cv2.imread("images/Blando_1.jpg")
+    cap2 = cv2.resize(image, (64, 64), interpolation=cv2.INTER_AREA)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    hist = desc.describe(gray, "images/patrick_bateman.jpg")
+    #Test
+    print(model.predict(hist.reshape(1,-1)))
+    print(model.decision_function(hist.reshape(1,-1)))
+
 print("Cross Validation Median: " + str(statistics.median(Cross_Validation_Score)))
+
+
 # Plots the model
 # plt.scatter(y_test, model.predict(x_test))
 # plt.xlabel("True Value")

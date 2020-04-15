@@ -31,7 +31,7 @@ model = joblib.load('Inser\Path\of_the_trained\SVM-model\here')
 scale = 0
 detections = []
 # read the image you want to detect the object in:
-img= cv2.imread("Insert\Path\of_the_image\here")
+img= cv2.imread("images/Blando_1.jpg")
 
 # Try it with image resized if the image is too big
 img= cv2.resize(img,(300,200)) # can change the size to default by commenting this code out our put in a random number
