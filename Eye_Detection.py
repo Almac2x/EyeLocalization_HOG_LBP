@@ -1,6 +1,6 @@
 # Website https://www.pyimagesearch.com/2015/03/23/sliding-windows-for-object-detection-with-python-and-opencv/
 
-import cv2, pickle, argparse, time
+import cv2, pickle, argparse, time, os
 from Feature_Descriptors.LBP import LBP
 from Feature_Descriptors.localbinarypatterns import LocalBinaryPatterns
 from pyimagesearch.helpers import pyramid, sliding_window
@@ -21,10 +21,14 @@ def getEyes(image):
     # load the model from disk
     Model_Path = "Eye_Detection_Model/Aptina/LBP_Aptina_0.9864 _KF#2.sav"
     loaded_model = pickle.load(open(Model_Path, 'rb'))
+    image_path = "Test_Create_Dataset/"
+
+    if not os.path.isdir(image_path):
+            os.mkdir(image_path)
 
     # Converts to LocalBinaryPatter
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
+    count=1
     # loop over the image pyramid
     for resized in pyramid(image, scale=1.5):
         # loop over the sliding window for each layer of the pyramid
@@ -40,7 +44,9 @@ def getEyes(image):
 
             crop_img = gray[y:y + winH, x:x + winW]
 
-
+            cv2.imwrite('%s/%s.png' % (image_path,count), crop_img)
+            print("image save")
+            count += 1
             hist = desc.describe(crop_img, "Frame")
             # Loads Prediction Model
             reshape_lbp = hist.reshape(1,-1)
