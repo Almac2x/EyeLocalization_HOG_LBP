@@ -7,7 +7,6 @@
 # import the necessary packages
 from imutils.video import VideoStream
 from imutils.video import FPS
-import datetime
 import numpy as np
 import argparse
 import imutils
@@ -16,8 +15,6 @@ import time
 import cv2
 import os
 #Import Feature Descriptors
-from Feature_Descriptors.HOG import HOG
-from  Feature_Descriptors.LBP import LBP
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()

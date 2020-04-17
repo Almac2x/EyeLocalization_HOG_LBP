@@ -12,6 +12,7 @@ class LocalBinaryPatterns:
 		#Initalizes Time to show how long it computes
 		Start_Time = time.time()
 
+
 		# compute the Local Binary Pattern representation
 		# of the image, and then use the LBP representation
 		# to build the histogram of patterns

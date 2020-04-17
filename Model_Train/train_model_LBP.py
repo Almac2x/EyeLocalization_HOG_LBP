@@ -2,7 +2,8 @@
 # python recognize.py --training images/training --testing images/testing
 
 # import the necessary packages
-from sklearn.model_selection import train_test_split, KFold, cross_val_score
+from sklearn.model_selection import KFold
+
 
 from Feature_Descriptors.localbinarypatterns import LocalBinaryPatterns
 from sklearn.svm import LinearSVC
@@ -13,7 +14,6 @@ import os
 import pickle, statistics
 import numpy as np
 import ntpath
-from matplotlib import pyplot as plt
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -42,6 +42,7 @@ for imagePath in paths.list_images(args["training"]):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     hist = desc.describe(gray,ntpath.basename(imagePath))
 
+
     # extract the label from the image path, then update the
     # label and data lists
     labels.append(imagePath.split(os.path.sep)[-2])
@@ -50,9 +51,11 @@ for imagePath in paths.list_images(args["training"]):
 
 # train a Linear SVM on the data
 model = LinearSVC(C=100.0, random_state=42)
+
+
 # Split up data into randomized training and test sets
-rand_state = np.random.randint(0, 100)
-DataTrain, DataTest, LabelTrain, LabelTest = train_test_split(data, labels, test_size=0.2, random_state=42)
+#rand_state = np.random.randint(0, 100)
+#DataTrain, DataTest, LabelTrain, LabelTest = train_test_split(data, labels, test_size=0.2, random_state=42)
 
 # Cross Validation Score
 # Cross_Score = cross_val_score(model,data,labels,cv=3)
@@ -81,8 +84,9 @@ for train_index, test_index in kf.split(data):
     i = i + 1
     print("KFold: " + str(i))
     model.fit(x_train, y_train)
+
     # Check the score of the Model
-    Score = round(model.score(DataTest, LabelTest), 4)
+    Score = round(model.score(x_test, y_train), 4)
     print('Test Accuracy of SVC = ', Score)
     Cross_Validation_Score.append(Score)
 
@@ -92,13 +96,14 @@ for train_index, test_index in kf.split(data):
     with open('Eye_Detection_Model/' + filename, 'wb') as f:
         pickle.dump(model, f)
 
-    image = cv2.imread("images/Blando_1.jpg")
+    image = cv2.imread("../images/Blando_1.jpg")
     cap2 = cv2.resize(image, (64, 64), interpolation=cv2.INTER_AREA)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     hist = desc.describe(gray, "images/patrick_bateman.jpg")
     #Test
-    print(model.predict(hist.reshape(1,-1)))
-    print(model.decision_function(hist.reshape(1,-1)))
+    hist2 = hist.reshape(1,-1)
+    print(model.predict(hist2))
+    print(model.decision_function(hist2))
 
 print("Cross Validation Median: " + str(statistics.median(Cross_Validation_Score)))
 

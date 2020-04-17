@@ -1,7 +1,6 @@
 # Website https://www.pyimagesearch.com/2015/03/23/sliding-windows-for-object-detection-with-python-and-opencv/
 
-import cv2, pickle, argparse, time, os
-from Feature_Descriptors.LBP import LBP
+import cv2, pickle, os
 from Feature_Descriptors.localbinarypatterns import LocalBinaryPatterns
 from pyimagesearch.helpers import pyramid, sliding_window
 
@@ -16,10 +15,11 @@ def getEyes(image):
     data = []
     labels = []
 
+
     # initialize the local binary patterns descriptor along with
 
     # load the model from disk
-    Model_Path = "Eye_Detection_Model/Aptina/LBP_Aptina_0.9864 _KF#2.sav"
+    Model_Path = "Eye_Detection_Model/LBP_test_aptine_0.9231__KF3.sav"
     loaded_model = pickle.load(open(Model_Path, 'rb'))
     image_path = "Test_Create_Dataset/"
 

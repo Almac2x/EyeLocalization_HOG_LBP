@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from skimage.feature import hog
 from skimage import data, exposure
 import time
+import numpy as np
 class HOG:
 
     @staticmethod
@@ -17,6 +18,7 @@ class HOG:
                         cells_per_block=(1, 1), visualize=True, multichannel=True)
 
         hog_image_rescaled = exposure.rescale_intensity(hog_image, in_range=(0, 10))
+
 
         print("--- %s seconds to convert HOG ---" % (time.time() - start_time))
         return (hog_image_rescaled)
