@@ -1,8 +1,5 @@
 # USAGE Website From: https://www.pyimagesearch.com/2018/09/24/opencv-face-recognition/
-# python recognize.py --detector face_detection_model \
-#	--embedding-model openface_nn4.small2.v1.t7 \
-#	--recognizer output/recognizer.pickle \
-#	--le output/le.pickle --image images/adrian.jpg
+# python recognize.py --detector face_detection_model --embedding-model openface_nn4.small2.v1.t7 --recognizer output/recognizer.pickle --le output/le.pickle --image images/adrian.jpg
 
 # import the necessary packages
 import numpy as np
@@ -106,7 +103,7 @@ for i in range(0, detections.shape[2]):
 			cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
 #Crops the Face
-	roi = image[startY:endY,startX:endX]
+roi = image[startY:endY,startX:endX]
 
 #[TEMPORARY] please put this in Main.py
 Eye = Eye_Detection.getEyes(roi)
@@ -115,3 +112,4 @@ Eye = Eye_Detection.getEyes(roi)
 # show the output image
 cv2.imshow("Image", image)
 cv2.waitKey(0)
+cv2.destroyAllWindows()

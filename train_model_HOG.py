@@ -4,6 +4,8 @@ from imutils import paths
 import cv2, argparse, os
 from Descriptors.HOG import HOG
 from sklearn.svm import LinearSVC
+import numpy as np
+from sklearn.model_selection import train_test_split
 
 # Construct Arguments
 
@@ -35,14 +37,13 @@ for imagePath in paths.list_images(args["dataset"]):
     labels.append(imagePath.split(os.path.sep)[-2])
     data.append(hist)
 
-#Print
-print(data)
-print(labels)
+(trainData, testData, trainLabels, testLabels) = train_test_split(
+	np.array(data), labels, test_size=0.20, random_state=42)
+#%% Train the linear SVM
+print(" Training Linear SVM classifier...")
+model = LinearSVC()
+model.fit(trainData, trainLabels)
 
-
-# train a Linear SVM on the data
-model = LinearSVC(C=100.0, random_state=42)
-model.fit(data, labels)
 
 # Saves the model as a pickle
 filename = "HOG_" + str(args["name"]) + "_" + " _KF#" + ".sav"

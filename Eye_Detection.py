@@ -77,6 +77,11 @@ def getEyes(image):
             cv2.waitKey(0)
 
 
+
             # THIS IS WHERE YOU WOULD PROCESS YOUR WINDOW, SUCH AS APPLYING A
             # MACHINE LEARNING CLASSIFIER TO CLASSIFY THE CONTENTS OF THE
             # WINDOW
+
+
+    cv2.destroyAllWindows()
+
