@@ -4,7 +4,7 @@ import numpy as np
 import time
 class LocalBinaryPatterns:
 	def __init__(self, numPoints, radius):
-		# store the number of points and radius
+		# store the number of points and radiusx
 		self.numPoints = numPoints
 		self.radius = radius
 

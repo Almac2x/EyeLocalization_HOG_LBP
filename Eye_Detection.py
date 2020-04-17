@@ -1,7 +1,7 @@
 # Website https://www.pyimagesearch.com/2015/03/23/sliding-windows-for-object-detection-with-python-and-opencv/
 
 import cv2, pickle, os
-from Feature_Descriptors.localbinarypatterns import LocalBinaryPatterns
+from Descriptors.localbinarypatterns import LocalBinaryPatterns
 from pyimagesearch.helpers import pyramid, sliding_window
 
 

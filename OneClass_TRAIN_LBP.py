@@ -1,4 +1,4 @@
-from Feature_Descriptors.localbinarypatterns import LocalBinaryPatterns
+from Descriptors.localbinarypatterns import LocalBinaryPatterns
 from sklearn.svm import OneClassSVM
 from imutils import paths
 import argparse
