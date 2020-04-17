@@ -45,7 +45,7 @@ model = LinearSVC(C=100.0, random_state=42)
 model.fit(data, labels)
 
 # Saves the model as a pickle
-filename = "LBP_" + str(args["name"]) + "_" + " _KF#" + ".sav"
+filename = "HOG_" + str(args["name"]) + "_" + " _KF#" + ".sav"
 # pickle.dump(model, open(filename, 'wb'))
 with open('Eye_Detection_Model/' + filename, 'wb') as f:
     pickle.dump(model, f)

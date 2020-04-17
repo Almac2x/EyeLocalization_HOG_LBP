@@ -16,10 +16,10 @@ class HOG:
     def getHOGimage(image_to_convert):
         start_time = time.time()
 
-        fd,vector = hog(image_to_convert, orientations=8, pixels_per_cell=(16, 16),
-                            cells_per_block=(1, 1), multichannel=True,feature_vector=True)
+        fd = hog(image_to_convert, orientations=9, pixels_per_cell=(8, 8),
+                            cells_per_block=(2, 2), block_norm="L2", feature_vector=True)
 
        # hog_image_rescaled = exposure.rescale_intensity(hog_image, in_range=(0, 10))
 
         print("--- %s seconds to convert HOG ---" % (time.time() - start_time))
-        return (vector)
+        return (fd)
