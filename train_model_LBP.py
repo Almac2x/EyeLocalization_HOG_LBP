@@ -19,8 +19,6 @@ import ntpath
 ap = argparse.ArgumentParser()
 ap.add_argument("-t", "--training", required=True,
                 help="path to the training images")
-ap.add_argument("-e", "--testing", required=False,
-                help="path to the tesitng images")
 ap.add_argument("-n", "--name", required=True,
                 help="name of the model to be saved")
 ap.add_argument("-s", "--splits", required=True,
@@ -51,6 +49,15 @@ for imagePath in paths.list_images(args["training"]):
 
 # train a Linear SVM on the data
 model = LinearSVC(C=100.0, random_state=42)
+
+for data2 in data:
+    print("nani")
+    print(data2)
+
+for label in labels:
+    print("label")
+    print(label)
+
 
 
 # Split up data into randomized training and test sets

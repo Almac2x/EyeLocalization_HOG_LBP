@@ -19,10 +19,17 @@ class HOG:
         # fd = hog(image_to_convert, orientations=9, pixels_per_cell=(8, 8),
         #                   cells_per_block=(2, 2), block_norm="L2", feature_vector=True)
 
-        fd = hog(image_to_convert, orientations=8, pixels_per_cell=(16, 16),
-                  cells_per_block=(1, 1), feature_vector=True)
-
+        H = hog(image_to_convert, orientations=9, pixels_per_cell=(10, 10),
+                        cells_per_block=(2, 2), transform_sqrt=True, block_norm="L1",feature_vector=True)
         # hog_image_rescaled = exposure.rescale_intensity(hog_image, in_range=(0, 10))
 
+        (hist, _) = np.histogram(H,
+                                 bins=np.arange(0, 8),
+                                 range=(0, 8))
+        # normalize the histogram
+        eps = 1e-7
+        hist = hist.astype("float")
+        hist /= (hist.sum() + eps)
+
         print("--- %s seconds to convert HOG ---" % (time.time() - start_time))
-        return (fd)
+        return (hist)
