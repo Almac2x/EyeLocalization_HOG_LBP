@@ -28,8 +28,6 @@ class LocalBinaryPatterns:
 
 		# Initalizes Time to show how long it computes
 		Time_Compute = time.time() - Start_Time
-		print("--- {}s seconds to convert {} to LBP ---".format(Time_Compute,image_name))
-
-
+		#print("--- {}s seconds to convert {} to LBP ---".format(Time_Compute,image_name))
 		# return the histogram of Local Binary Patterns
 		return hist
