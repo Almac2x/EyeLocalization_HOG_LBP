@@ -7,8 +7,9 @@ import argparse
 import imutils
 import pickle
 import cv2
-import os, time, pickle, Eye_Detection
+import os, time, pickle
 from pyimagesearch.nms import non_max_suppression_fast
+from Eye_Detection import Eyes
 
 # construct the argument parser and parse the arguments
 from pyimagesearch.helpers import pyramid, sliding_window
@@ -32,7 +33,9 @@ args_detector = "face_detection_model"
 args_embedding_model = "openface_nn4.small2.v1.t7"
 args_recognizer = "output/recognizer.pickle"
 args_le = "output/le.pickle"
-args_image = "images/adrian.jpg"
+args_image = "images/Blando_2.jpg"
+#Change here the descriptors use
+Descriptor = "LBP"
 
 # load our serialized face detector from disk
 print("[INFO] loading face detector...")
@@ -64,6 +67,9 @@ imageBlob = cv2.dnn.blobFromImage(
 # faces in the input image
 detector.setInput(imageBlob)
 detections = detector.forward()
+
+#Loads Eye Detector
+Eye_Detector = Eyes(Descriptor)
 
 # loop over the detections
 for i in range(0, detections.shape[2]):
@@ -110,23 +116,20 @@ for i in range(0, detections.shape[2]):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
 # Crops the Face
-roi = image[startY:endY, startX:endX]
+roi = image[startY:int(endY), startX:endX]
 
-startX_roi = startX
-endx_roi = endX
-startY_roi = startY
-endY_roi = endY
-
-# [TEMPORARY] please put this in Main.py
-Eyes = Eye_Detection.getEyes(roi)
+# Computes Eye Locations
+if(Descriptor == "LBP"):
+    Eyes = Eye_Detector.getEyes(roi)
+elif(Descriptor == "HOG"):
+    Eyes = Eye_Detector.getEyes(roi)
 
 # Draws the boxes for eyes
-
 nms = non_max_suppression_fast(Eyes, 0.3)
 
 # loop over the bounding boxes for each image and draw them
 for (startX, startY, endX, endY) in nms:
-    cv2.rectangle(roi, (startX, startY), (endX, endY), (0, 0, 255), 2)
+    cv2.rectangle(roi, (startX, startY), (endX, endY), (0, 255, 0), 2)
 
 # for (startX, startY, endX, endY) in nms:
 #    sx = startX_roi + startX
@@ -136,6 +139,7 @@ for (startX, startY, endX, endY) in nms:
 #    ey = endY_roi - endY
 #
 #    cv2.rectangle(image, (sx, sy), (ex, ey), (0, 255, 0), 2)
+
 
 # show the output image
 cv2.imshow("Image", image)

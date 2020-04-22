@@ -50,16 +50,6 @@ for imagePath in paths.list_images(args["training"]):
 # train a Linear SVM on the data
 model = LinearSVC(C=100.0, random_state=42)
 
-for data2 in data:
-    print("nani")
-    print(data2)
-
-for label in labels:
-    print("label")
-    print(label)
-
-
-
 # Split up data into randomized training and test sets
 #rand_state = np.random.randint(0, 100)
 #DataTrain, DataTest, LabelTrain, LabelTest = train_test_split(data, labels, test_size=0.2, random_state=42)

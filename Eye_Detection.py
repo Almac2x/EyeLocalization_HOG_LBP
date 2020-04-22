@@ -7,88 +7,111 @@ from Descriptors.HOG import HOG
 import numpy as np
 
 
-def getEyes(image):
-    # Starts of Eye Detection
-    # Initializes box array
-    Eye_Box_Loc = []
+class Eyes:
+    def __init__(self,Descriptor):
+        # Chooses what descriptor to use
+        self.Descriptor = Descriptor
+        if Descriptor == "LBP":
+            self.Model_Path = "Eye_Detection_Model/Aptina/LBP_Aptina_0.9864 _KF#2.sav"
+        elif Descriptor == "HOG":
+            self.Model_Path = "Eye_Detection_Model/Aptina/HOGAptinaHOG_0.958029197080292 _KF#2.sav"
 
-    # load the image and define the window width and height
-    (winW, winH) = (64, 64)
+        #Loads the model to be used
+        self.loaded_model = pickle.load(open(self.Model_Path, 'rb'))
 
-    desc = LocalBinaryPatterns(24, 8)
-    data = []
-    labels = []
+        
 
-    # initialize the local binary patterns descriptor along with
+    def getEyes(self,image):
+        # Starts of Eye Detection
+        # Initializes box array
+        Eye_Box_Loc = []
 
-    # load the model from disk
-    Model_Path = "Eye_Detection_Model/Aptina/LBP_Aptina_0.9864 _KF#2.sav"
-    loaded_model = pickle.load(open(Model_Path, 'rb'))
+        # load the image and define the window width and height
+        (winW, winH) = (64, 64)
 
-    #Write a place to put
-    #image_path = "Test_Create_Dataset/"
-    #if not os.path.isdir(image_path):
-    #   os.mkdir(image_path)
+        if(self.Descriptor == "LBP"):
+            desc = LocalBinaryPatterns(24, 8)
+        data = []
+        labels = []
 
-    # Converts to LocalBinaryPatter
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    #count = 1
+        # initialize the local binary patterns descriptor along with
 
-    # loop over the image pyramid
-    for resized in pyramid(image, scale=1.5):
-        # loop over the sliding window for each layer of the pyramid
-        for (x, y, window) in sliding_window(resized, stepSize=16, windowSize=(winW, winH)):
-            # if the window does not meet our desired window size, ignore it
-            if window.shape[0] != winH or window.shape[1] != winW:
-                continue
+        # Write a place to put
+        # image_path = "Test_Create_Dataset/"
+        # if not os.path.isdir(image_path):
+        #   os.mkdir(image_path)
 
-            #clone = resized.copy()
-            #cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
-            #cv2.imshow("Window", clone)
+        # Converts to LocalBinaryPatter
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        # count = 1
 
-            crop_img = gray[y:y + winH, x:x + winW]
+        # loop over the image pyramid
+        for resized in pyramid(image, scale=1.5):
+            # loop over the sliding window for each layer of the pyramid
+            for (x, y, window) in sliding_window(resized, stepSize=16, windowSize=(winW, winH)):
+                # if the window does not meet our desired window size, ignore it
+                if window.shape[0] != winH or window.shape[1] != winW:
+                    continue
 
-            Box = [x, y, x + winW, y + winH]
+                # clone = resized.copy()
+                # cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
+                # cv2.imshow("Window", clone)
 
-            # Writes the cropped to disk
-            # cv2.imwrite('%s/%s.png' % (image_path, count), crop_img)
-            # print("image save")
-            # count += 1
+                crop_img = gray[y:y + winH, x:x + winW]
 
-            #cv2.imshow("cropped", crop_img)
+                Box = [x, y, x + winW, y + winH]
+                #IMG_Copy = resized.copy()
 
-            # THIS IS WHERE YOU WOULD PROCESS YOUR WINDOW, SUCH AS APPLYING A
-            # MACHINE LEARNING CLASSIFIER TO CLASSIFY THE CONTENTS OF THE
-            # WINDOW
+                # Writes the cropped to disk
+                # cv2.imwrite('%s/%s.png' % (image_path, count), crop_img)
+                # print("image save")
+                # count += 1
+                # See how it slides
+                #cv2.rectangle(IMG_Copy, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
+                #cv2.imshow("Window", IMG_Copy)
 
-            #Describes the image
-            hist = desc.describe(crop_img, "Frame")
+                # THIS IS WHERE YOU WOULD PROCESS YOUR WINDOW, SUCH AS APPLYING A
+                # MACHINE LEARNING CLASSIFIER TO CLASSIFY THE CONTENTS OF THE
+                # WINDOW
 
-            # Loads Prediction Model
-            reshape_lbp = hist.reshape(1, -1)
-            prediction = loaded_model.predict(reshape_lbp)
+                # Describes the image
+                if(self.Descriptor == "LBP"):
+                    hist = desc.describe(crop_img, "Frame")
+                elif(self.Descriptor == "HOG"):
+                    hist = HOG.getHOGimage(crop_img)
 
-            confidence_level = loaded_model.decision_function(reshape_lbp)
-            Eye_Open_Confidence_Level = confidence_level[0][1] * 100
+                # Loads Prediction Model
+                reshape_lbp = hist.reshape(1, -1)
+                prediction = self.loaded_model.predict(reshape_lbp)
 
-            if prediction[0] == "Eye_Open" and Eye_Open_Confidence_Level > 90:
-                Eye_Box_Loc.append(Box)
-                #print("Status: ".format(prediction[0]))
-                #print("Eye_Open Confidenve Level: {:.2f}".format(Eye_Open_Confidence_Level))
-                #print("Confidence Level: {}".format(confidence_level))
+                confidence_level = self.loaded_model.decision_function(reshape_lbp)
+                Eye_Open_Confidence_Level = confidence_level[0][1]*100
+                print(prediction[0])
+                print(Eye_Open_Confidence_Level)
 
-            # Eyes
-            # if eye = Eye_close:
-            # Eyes.append
 
-            # Confidence Level
-            # print(prediction)
 
-            # display the image and the prediction
-            # XY = (x, y + winH)
-            # cv2.putText(image, prediction[0], XY, cv2.FONT_HERSHEY_SIMPLEX,
-            #           1.0, (0, 0, 255), 3)
 
-    cv2.destroyAllWindows()
+                if prediction[0] == "Eye_Open" and Eye_Open_Confidence_Level > 100:
+                    Eye_Box_Loc.append(Box)
+                    #print("Status: ".format(prediction[0]))
+                    #print("Eye_Open Confidenve Level: {:.2f}".format(Eye_Open_Confidence_Level))
+                    #print("Confidence Level: {}".format(confidence_level))
 
-    return np.array(Eye_Box_Loc)
+                # display the image and the prediction
+                # XY = (x, y + winH)
+                # cv2.putText(image, prediction[0], XY, cv2.FONT_HERSHEY_SIMPLEX,
+                #           1.0, (0, 0, 255), 3)
+
+
+                #cv2.imshow("cropped", crop_img)
+                #cv2.waitKey(0)
+
+        #cv2.destroyAllWindows()
+
+
+        return np.array(Eye_Box_Loc)
+
+
+
+

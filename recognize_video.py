@@ -11,15 +11,17 @@ import pickle
 import time
 import cv2
 import os
-import Eye_Detection
+from Eye_Detection import Eyes
 
 # Import Feature Descriptors
 from pyimagesearch.nms import non_max_suppression_fast
 
+#Loads Eye Detector
+Eye_Detector = Eyes("LBP")
 
 def getEyes(roi):
     #Gets eyes location into an array
-    Eyes = Eye_Detection.getEyes(roi)
+    Eyes = Eye_Detector.getEyes(roi)
 
     # Performs NMS to approximate boxes
     nms = non_max_suppression_fast(Eyes, 0.3)
@@ -76,6 +78,8 @@ startY = 0
 startX = 0
 endY = 0
 endX = 0
+
+
 
 
 # loop over frames from the video file stream
@@ -147,6 +151,15 @@ while True:
             cv2.putText(frame, "FPS: " + str(FPS), (startX, y - 20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
+            # Crops the Face
+            roi = frame[startY:int(endY), startX:endX]
+
+            if (found_face == True):
+                nms = getEyes(roi)
+
+                for (startX, startY, endX, endY) in nms:
+                    cv2.rectangle(roi, (startX, startY), (endX, endY), (255, 0, 0), 2)
+
     # update the FPS counter
     fps.update()
     # Calculates the FPS in Realtime
@@ -157,14 +170,7 @@ while True:
         FPS = Frame_Counter
         Frame_Counter = 0
 
-    # Crops the Face
-    roi = frame[startY:endY, startX:endX]
 
-
-    if(found_face == True):
-       nms = getEyes(roi)
-       for (startX, startY, endX, endY) in nms:
-           cv2.rectangle(roi, (startX, startY), (endX, endY), (255, 0, 0), 2)
 
     # show the output frame
     cv2.imshow("Frame", frame)

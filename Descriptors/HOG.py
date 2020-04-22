@@ -30,6 +30,6 @@ class HOG:
         hist /= (hist.sum() + eps)
 
         #print(hist)
-        #print("--- %s seconds to convert HOG ---" % (time.time() - start_time))
+        print("--- %s seconds to convert HOG ---" % (time.time() - start_time))
 
         return hist
