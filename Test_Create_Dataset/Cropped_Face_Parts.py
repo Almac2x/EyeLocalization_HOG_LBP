@@ -17,15 +17,20 @@ from pyimagesearch.helpers import pyramid, sliding_window
 # load the image and define the window width and height
 (winW, winH) = (64,64)
 
+image_path = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset"
 
-def scan_image(image):
+def scan_image(image, name):
     # loop over the image pyramid
-
+    count=1
     for (x, y, window) in sliding_window(image, stepSize=63, windowSize=(winW, winH)):
         # if the window does not meet our desired window size, ignore it
         if window.shape[0] != winH or window.shape[1] != winW:
             continue
-
+        crop_img = image[y:y + winH, x:x + winW]
+        # Writes the cropped to disk
+        cv2.imwrite('%s/%s-%s.png' % (image_path, name, count), crop_img)
+        print("image save")
+        count += 1
         clone = image.copy()
         cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 255), 2)
         cv2.imshow("Window", clone)
@@ -35,13 +40,13 @@ def scan_image(image):
 data = []
 labels = []
 
-dataset_path = r"C:\Users\bland\Desktop\Thesis\Datasets\Face_Datasets\CroppedYale_ConvertedPNG"
+dataset_path = r"../dataset/trisha"
 
 # loop over the training images
 
 for imagePath in paths.list_images(dataset_path):
     # load the image, convert it to grayscale, and describe it
-
+    print("JEff")
     image = cv2.imread(imagePath)
     print("Image Path: {} \n Image Height: {} \n Image Width: {} ".format(imagePath.split(os.path.sep)[-1],
                                                                           image.shape[0], image.shape[1]))
@@ -49,7 +54,7 @@ for imagePath in paths.list_images(dataset_path):
     gray = cv2.cvtColor(resize, cv2.COLOR_BGR2GRAY)
     cv2.imshow(str(imagePath), resize)
 
-    scan_image(gray)
+    scan_image(gray, imagePath.split(os.path.sep)[-1])
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
