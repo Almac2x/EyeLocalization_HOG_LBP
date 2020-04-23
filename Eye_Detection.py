@@ -85,15 +85,20 @@ class Eyes:
                 prediction = self.loaded_model.predict(reshape_lbp)
 
                 confidence_level = self.loaded_model.decision_function(reshape_lbp)
-                Eye_Open_Confidence_Level = confidence_level[0][1]*100
+                if(self.Descriptor == "LBP"):
+                    Eye_Open_Confidence_Level = confidence_level[0][1] * 100
+
+                    if prediction[0] == "Eye_Open" and confidence_level > 90:
+                        Eye_Box_Loc.append(Box)
+
+                elif(self.Descriptor == "HOG"):
+                    Eye_Open_Confidence_Level = confidence_level[0] * 100
+                    if prediction[0] == "Eye" and confidence_level > 90:
+                        Eye_Box_Loc.append(Box)
+
                 print(prediction[0])
                 print(Eye_Open_Confidence_Level)
 
-
-
-
-                if prediction[0] == "Eye_Open" and Eye_Open_Confidence_Level > 100:
-                    Eye_Box_Loc.append(Box)
                     #print("Status: ".format(prediction[0]))
                     #print("Eye_Open Confidenve Level: {:.2f}".format(Eye_Open_Confidence_Level))
                     #print("Confidence Level: {}".format(confidence_level))

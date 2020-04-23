@@ -78,6 +78,8 @@ startY = 0
 startX = 0
 endY = 0
 endX = 0
+#Change here the descriptors use
+Descriptor = "HOG"
 
 
 

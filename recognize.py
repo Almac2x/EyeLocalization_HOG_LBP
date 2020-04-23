@@ -35,7 +35,7 @@ args_recognizer = "output/recognizer.pickle"
 args_le = "output/le.pickle"
 args_image = "images/Blando_2.jpg"
 #Change here the descriptors use
-Descriptor = "LBP"
+Descriptor = "HOG"
 
 # load our serialized face detector from disk
 print("[INFO] loading face detector...")
@@ -120,7 +120,7 @@ roi = image[startY:int(endY), startX:endX]
 
 # Computes Eye Locations
 if(Descriptor == "LBP"):
-    Eyes = Eye_Detector.getEyes(roi)
+    Eyes = Eye_Detector.getEyes(cv2.imread("dataset/Aptina/Eye/s0012_01282_0_0_0_0_1_03.png"))
 elif(Descriptor == "HOG"):
     Eyes = Eye_Detector.getEyes(roi)
 
