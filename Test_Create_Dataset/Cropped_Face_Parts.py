@@ -25,7 +25,7 @@ def scan_image(image, name):
     # loop over the image pyramid
     count=1
     os.mkdir(image_path_save + name)
-    for (x, y, window) in sliding_window(image, stepSize=63, windowSize=(winW, winH)):
+    for (x, y, window) in sliding_window(image, stepSize=64, windowSize=(winW, winH)):
         # if the window does not meet our desired window size, ignore it
         if window.shape[0] != winH or window.shape[1] != winW:
             continue
