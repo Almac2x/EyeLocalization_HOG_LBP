@@ -33,7 +33,7 @@ args_detector = "face_detection_model"
 args_embedding_model = "openface_nn4.small2.v1.t7"
 args_recognizer = "output/recognizer.pickle"
 args_le = "output/le.pickle"
-args_image = "images/Blando_1.jpg"
+args_image = "images/Pili_3.jpg"
 #Change here the descriptors use
 Descriptor = "HOG"
 
@@ -117,12 +117,14 @@ for i in range(0, detections.shape[2]):
 
 # Crops the Face
 roi = image[startY:int(endY), startX:endX]
+roi_resize = cv2.resize(roi, (192, 192), interpolation=cv2.INTER_AREA)
 
 # Computes Eye Locations
 if(Descriptor == "LBP"):
     Eyes = Eye_Detector.getEyes(cv2.imread("dataset/Aptina/Eye/s0012_01282_0_0_0_0_1_03.png"))
 elif(Descriptor == "HOG"):
-    Eyes = Eye_Detector.getEyes(roi)
+    cv2.imshow("Nani",roi_resize)
+    Eyes = Eye_Detector.getEyes(roi_resize)
 
 # Draws the boxes for eyes
 nms = non_max_suppression_fast(Eyes, 0.3)

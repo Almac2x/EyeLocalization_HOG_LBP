@@ -14,7 +14,7 @@ class Eyes:
         if Descriptor == "LBP":
             self.Model_Path = "Eye_Detection_Model/Aptina/LBP_Aptina_0.9864 _KF#2.sav"
         elif Descriptor == "HOG":
-            self.Model_Path = "Eye_Detection_Model/Aptina/HOGAptinaHOG_0.958029197080292 _KF#2.sav"
+            self.Model_Path = "Eye_Detection_Model/HOG64_test_0.7775477340694732__KF2.sav"
 
         #Loads the model to be used
         self.loaded_model = pickle.load(open(self.Model_Path, 'rb'))
@@ -53,12 +53,11 @@ class Eyes:
                 if window.shape[0] != winH or window.shape[1] != winW:
                     continue
 
-                # clone = resized.copy()
-                # cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
-                # cv2.imshow("Window", clone)
+                clone = resized.copy()
+                cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
+                cv2.imshow("Window", clone)
 
                 crop_img = gray[y:y + winH, x:x + winW]
-
                 Box = [x, y, x + winW, y + winH]
                 #IMG_Copy = resized.copy()
 
@@ -93,7 +92,7 @@ class Eyes:
 
                 elif(self.Descriptor == "HOG"):
                     Eye_Open_Confidence_Level = confidence_level[0] * 100
-                    if prediction[0] == "Eye" and confidence_level > 90:
+                    if prediction[0] == "Eyes":
                         Eye_Box_Loc.append(Box)
 
                 print(prediction[0])
@@ -109,8 +108,8 @@ class Eyes:
                 #           1.0, (0, 0, 255), 3)
 
 
-                #cv2.imshow("cropped", crop_img)
-                #cv2.waitKey(0)
+                cv2.imshow("cropped", crop_img)
+                cv2.waitKey(0)
 
         #cv2.destroyAllWindows()
 

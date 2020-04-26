@@ -16,14 +16,18 @@ from pyimagesearch.helpers import pyramid, sliding_window
 (winW, winH) = (64, 64)
 
 # Change Dataset
-dataset_path = r"..\dataset\trisha"
-image_path_save = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset"
-image_path_save_eyes = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_DatasetEyes"
+dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\CroppedYale_ConvertedPNG"
+image_path_save = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Cropped_64x64"
+image_path_save_eyes = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Cropped_64x64_Eyes"
+new_path_save = image_path_save +"\\Negative"
 
-
-# os.mkdir(image_path_save_eyes)
+os.mkdir(new_path_save)
 
 def scan_image(image, name):
+
+
+
+
     # loop over the image pyramid
     count = 1
     for (x, y, window) in sliding_window(image, stepSize=64, windowSize=(winW, winH)):
@@ -33,19 +37,19 @@ def scan_image(image, name):
         crop_img = image[y:y + winH, x:x + winW]
 
         # Writes the cropped to disk
-        if count == 1 or count == 2:
+        if count == 1 or count == 3:
             cv2.imwrite('%s/%s-%s.png' % (image_path_save_eyes, name, count), crop_img)
             print("image save")
         else:
-            cv2.imwrite('%s/%s-%s.png' % (image_path_save, name, count), crop_img)
+            cv2.imwrite('%s/%s-%s.png' % (new_path_save, name, count), crop_img)
             print("image save")
 
         # Shows How Sliding windows works
         count += 1
-        clone = image.copy()
-        cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 255), 2)
-        cv2.imshow("Window", clone)
-        cv2.waitKey(0)
+        #clone = image.copy()
+        #cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 255), 2)
+        #cv2.imshow("Window", clone)
+        #cv2.waitKey(0)
 
 
 data = []
@@ -65,7 +69,7 @@ for imagePath in paths.list_images(dataset_path):
 
     scan_image(gray, os.path.splitext(imagePath.split(os.path.sep)[-1])[0])
 
-    cv2.waitKey(0)
+
     cv2.destroyAllWindows()
 
     # extract the label from the image path, then update the
