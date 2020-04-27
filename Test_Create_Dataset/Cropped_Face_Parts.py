@@ -16,10 +16,10 @@ from pyimagesearch.helpers import pyramid, sliding_window
 (winW, winH) = (64, 64)
 
 # Change Dataset
-dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\CroppedYale_ConvertedPNG"
-image_path_save = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Cropped_64x64"
-image_path_save_eyes = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Cropped_64x64_Eyes"
-new_path_save = image_path_save +"\\Negative"
+dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\CroppedYale_ConvertedPNG"
+image_path_save = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Negative"
+image_path_save_eyes = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Eyes"
+new_path_save = image_path_save
 
 os.mkdir(new_path_save)
 
@@ -65,12 +65,10 @@ for imagePath in paths.list_images(dataset_path):
                                                                           image.shape[0], image.shape[1]))
     resize = cv2.resize(image, (192, 192), interpolation=cv2.INTER_AREA)
     gray = cv2.cvtColor(resize, cv2.COLOR_BGR2GRAY)
-    cv2.imshow(str(imagePath), resize)
 
     scan_image(gray, os.path.splitext(imagePath.split(os.path.sep)[-1])[0])
 
 
-    cv2.destroyAllWindows()
 
     # extract the label from the image path, then update the
     # label and data lists

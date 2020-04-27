@@ -19,29 +19,30 @@ class Eyes:
         #Loads the model to be used
         self.loaded_model = pickle.load(open(self.Model_Path, 'rb'))
 
+
         
 
     def getEyes(self,image):
         # Starts of Eye Detection
-        # Initializes box array
+
+        # Initializes box array to store eye locations
         Eye_Box_Loc = []
 
         # load the image and define the window width and height
         (winW, winH) = (64, 64)
 
         if(self.Descriptor == "LBP"):
+            # initialize the local binary patterns descriptor along with
             desc = LocalBinaryPatterns(24, 8)
-        data = []
-        labels = []
 
-        # initialize the local binary patterns descriptor along with
+
 
         # Write a place to put
         # image_path = "Test_Create_Dataset/"
         # if not os.path.isdir(image_path):
         #   os.mkdir(image_path)
 
-        # Converts to LocalBinaryPatter
+        # Converts to BGR2GRAY
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # count = 1
 
@@ -58,6 +59,7 @@ class Eyes:
                 cv2.imshow("Window", clone)
 
                 crop_img = gray[y:y + winH, x:x + winW]
+
                 Box = [x, y, x + winW, y + winH]
                 #IMG_Copy = resized.copy()
 
@@ -83,11 +85,12 @@ class Eyes:
                 reshape_lbp = hist.reshape(1, -1)
                 prediction = self.loaded_model.predict(reshape_lbp)
 
+
                 confidence_level = self.loaded_model.decision_function(reshape_lbp)
                 if(self.Descriptor == "LBP"):
                     Eye_Open_Confidence_Level = confidence_level[0][1] * 100
 
-                    if prediction[0] == "Eye_Open" and confidence_level > 90:
+                    if prediction[0] == "Eye_Open" and Eye_Open_Confidence_Level > 90:
                         Eye_Box_Loc.append(Box)
 
                 elif(self.Descriptor == "HOG"):

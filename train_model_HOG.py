@@ -51,7 +51,7 @@ for imagePath in paths.list_images(args["dataset"]):
 # %% Train the linear SVM
 
 print(" Training Linear SVM classifier...")
-model = LinearSVC(C=1.0)
+model = LinearSVC(C=100.0,random_state=42)
 model.fit(data,labels)
 save_Model(model,model.score(data,labels),2)
 

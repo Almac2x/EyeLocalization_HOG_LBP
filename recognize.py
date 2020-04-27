@@ -117,14 +117,14 @@ for i in range(0, detections.shape[2]):
 
 # Crops the Face
 roi = image[startY:int(endY), startX:endX]
-roi_resize = cv2.resize(roi, (192, 192), interpolation=cv2.INTER_AREA)
+#roi_resize = cv2.resize(roi, (192, 192), interpolation=cv2.INTER_AREA)
 
 # Computes Eye Locations
 if(Descriptor == "LBP"):
     Eyes = Eye_Detector.getEyes(cv2.imread("dataset/Aptina/Eye/s0012_01282_0_0_0_0_1_03.png"))
 elif(Descriptor == "HOG"):
-    cv2.imshow("Nani",roi_resize)
-    Eyes = Eye_Detector.getEyes(roi_resize)
+    cv2.imshow("Nani",roi)
+    Eyes = Eye_Detector.getEyes(roi)
 
 # Draws the boxes for eyes
 nms = non_max_suppression_fast(Eyes, 0.3)
