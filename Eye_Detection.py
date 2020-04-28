@@ -14,13 +14,13 @@ class Eyes:
         if Descriptor == "LBP":
             self.Model_Path = "Eye_Detection_Model/Aptina/LBP_Aptina_0.9864 _KF#2.sav"
         elif Descriptor == "HOG":
-            self.Model_Path = "Eye_Detection_Model/HOG64_test_0.7775477340694732__KF2.sav"
+            self.Model_Path = "Eye_Detection_Model/HOGNo_Blacks_64_v2_0.7991346773451165__KF2.sav"
 
         #Loads the model to be used
         self.loaded_model = pickle.load(open(self.Model_Path, 'rb'))
 
 
-        
+
 
     def getEyes(self,image):
         # Starts of Eye Detection
@@ -47,14 +47,14 @@ class Eyes:
         # count = 1
 
         # loop over the image pyramid
-        for resized in pyramid(image, scale=1.5):
+        #for resized in pyramid(image, scale=1.5):
             # loop over the sliding window for each layer of the pyramid
-            for (x, y, window) in sliding_window(resized, stepSize=16, windowSize=(winW, winH)):
+        for (x, y, window) in sliding_window(image, stepSize=16, windowSize=(winW, winH)):
                 # if the window does not meet our desired window size, ignore it
                 if window.shape[0] != winH or window.shape[1] != winW:
                     continue
 
-                clone = resized.copy()
+                clone = image.copy()
                 cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
                 cv2.imshow("Window", clone)
 
@@ -95,7 +95,7 @@ class Eyes:
 
                 elif(self.Descriptor == "HOG"):
                     Eye_Open_Confidence_Level = confidence_level[0] * 100
-                    if prediction[0] == "Eyes":
+                    if prediction[0] == "Eyes" :
                         Eye_Box_Loc.append(Box)
 
                 print(prediction[0])
@@ -111,8 +111,9 @@ class Eyes:
                 #           1.0, (0, 0, 255), 3)
 
 
-                cv2.imshow("cropped", crop_img)
-                cv2.waitKey(0)
+                #Wait Key for Show
+                #cv2.imshow("cropped", crop_img)
+                #cv2.waitKey(0)
 
         #cv2.destroyAllWindows()
 

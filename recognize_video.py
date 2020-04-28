@@ -17,7 +17,7 @@ from Eye_Detection import Eyes
 from pyimagesearch.nms import non_max_suppression_fast
 
 #Loads Eye Detector
-Eye_Detector = Eyes("LBP")
+Eye_Detector = Eyes("HOG")
 
 def getEyes(roi):
     #Gets eyes location into an array
@@ -155,12 +155,22 @@ while True:
 
             # Crops the Face
             roi = frame[startY:int(endY), startX:endX]
+            #Resizes Shape
+            roi_resize = cv2.resize(roi, (192, 192), interpolation=cv2.INTER_AREA)
 
             if (found_face == True):
-                nms = getEyes(roi)
+                # Computes Eye Locations
+                if Descriptor == "LBP":
+                    Eyes = Eye_Detector.getEyes(cv2.imread("dataset/Aptina/Eye/s0012_01282_0_0_0_0_1_03.png"))
+                elif Descriptor == "HOG":
+                    Eyes = Eye_Detector.getEyes(roi_resize)
+
+                # Draws the boxes for eyes
+                nms = non_max_suppression_fast(Eyes, 0.3)
 
                 for (startX, startY, endX, endY) in nms:
                     cv2.rectangle(roi, (startX, startY), (endX, endY), (255, 0, 0), 2)
+
 
     # update the FPS counter
     fps.update()

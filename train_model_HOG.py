@@ -9,14 +9,16 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
 from scipy import sparse
 
+
 # Command : python train_model_HOG.py --dataset dataset --name Nani --splits 3
 
-def save_Model(model,Score,i):
+def save_Model(model, Score, i):
     # Saves the model as a pickle
     filename = "HOG" + str(args["name"]) + "_" + str(Score) + " _KF#" + str(i) + ".sav"
     # pickle.dump(model, open(filename, 'wb'))
     with open('Eye_Detection_Model/' + filename, 'wb') as f:
         pickle.dump(model, f)
+
 
 # Construct Arguments
 
@@ -40,7 +42,7 @@ for imagePath in paths.list_images(args["dataset"]):
 
     image = cv2.imread(imagePath)
     cap2 = cv2.resize(image, (64, 64), interpolation=cv2.INTER_AREA)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(cap2, cv2.COLOR_BGR2GRAY)
     hist = HOG.getHOGimage(gray)
 
     # extract the label from the image path, then update the
@@ -51,20 +53,17 @@ for imagePath in paths.list_images(args["dataset"]):
 # %% Train the linear SVM
 
 print(" Training Linear SVM classifier...")
-model = LinearSVC(C=100.0,random_state=42)
-model.fit(data,labels)
-save_Model(model,model.score(data,labels),2)
+model = LinearSVC(C=100.0, random_state=42)
+model.fit(data, labels)
+save_Model(model, model.score(data, labels), 2)
 
-
-
-
-#Splitting
+# Splitting
 # KFold
-#kf = KFold(n_splits=int(args["splits"]), random_state=None, shuffle=False)
-#Cross_Validation_Score = []
+# kf = KFold(n_splits=int(args["splits"]), random_state=None, shuffle=False)
+# Cross_Validation_Score = []
 
-#i = 0
-#for train_index, test_index in kf.split(data):
+# i = 0
+# for train_index, test_index in kf.split(data):
 #    print("*****************************************")
 #    #print("TRAIN:", train_index, "TEST:", test_index)
 #    x_train, x_test = np.array(data)[train_index.astype(int)], np.array(data)[test_index.astype(int)]
@@ -77,9 +76,3 @@ save_Model(model,model.score(data,labels),2)
 #    Score = round(model.score(x_test, y_train), 4)
 #    print('Test Accuracy of SVC = ', Score)
 #    Cross_Validation_Score.append(Score)
-
-
-
-
-
-
