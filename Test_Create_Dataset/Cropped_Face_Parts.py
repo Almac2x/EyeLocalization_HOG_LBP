@@ -18,7 +18,8 @@ from pyimagesearch.helpers import pyramid, sliding_window
 # Change Dataset
 dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\CroppedYale_ConvertedPNG"
 image_path_save = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Negative"
-image_path_save_eyes = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Eyes"
+image_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Eyes_Right"
+image_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Eyes_Left"
 new_path_save = image_path_save
 
 os.mkdir(new_path_save)
@@ -45,9 +46,13 @@ def scan_image(image, name):
 
 
         # Writes the cropped to disk
-        if count == 1 or count == 3:
-            cv2.imwrite('%s/%s-%s.png' % (image_path_save_eyes, name, count), crop_img)
-            print("image save")
+        if count == 1:
+            cv2.imwrite('%s/%s-%s.png' % (image_path_save_eyes_right, name, count), crop_img)
+            print("image save to" + image_path_save_eyes_right)
+        elif count == 3:
+            cv2.imwrite('%s/%s-%s.png' % (image_path_save_eyes_left, name, count), crop_img)
+            print("image save to" + image_path_save_eyes_left)
+
         else:
             cv2.imwrite('%s/%s-%s.png' % (new_path_save, name, count), crop_img)
             print("image save")

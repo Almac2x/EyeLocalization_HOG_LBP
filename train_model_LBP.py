@@ -83,7 +83,7 @@ for train_index, test_index in kf.split(data):
     model.fit(x_train, y_train)
 
     # Check the score of the Model
-    Score = round(model.score(x_test, y_train), 4)
+    Score = round(model.score(x_train, y_train), 4)
     print('Test Accuracy of SVC = ', Score)
     Cross_Validation_Score.append(Score)
 
@@ -93,6 +93,7 @@ for train_index, test_index in kf.split(data):
     with open('Eye_Detection_Model/' + filename, 'wb') as f:
         pickle.dump(model, f)
 
+    #Testing
     image = cv2.imread("images/Blando_1.jpg")
     cap2 = cv2.resize(image, (64, 64), interpolation=cv2.INTER_AREA)
     gray = cv2.cvtColor(cap2, cv2.COLOR_BGR2GRAY)
