@@ -66,7 +66,8 @@ le = pickle.loads(open(args_le, "rb").read())
 
 # initialize the video stream, then allow the camera sensor to warm up
 print("[INFO] starting video stream...")
-vs = VideoStream(src=0).start()
+input_video='test_v.mp4'
+vs = VideoStream(input_video).start()
 time.sleep(2.0)
 
 # start the FPS throughput estimator
@@ -116,7 +117,7 @@ while True:
         if confidence > args["confidence"]:
             # compute the (x, y)-coordinates of the bounding box for
             # the face
-            found_face = True
+            # found_face = True
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
 

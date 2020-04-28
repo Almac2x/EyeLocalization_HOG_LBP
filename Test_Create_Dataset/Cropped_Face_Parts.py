@@ -16,13 +16,13 @@ from pyimagesearch.helpers import pyramid, sliding_window
 (winW, winH) = (64, 64)
 
 # Change Dataset
-dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\CroppedYale_ConvertedPNG"
-image_path_save = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Negative"
-image_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Eyes_Right"
-image_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Eyes_Left"
+dataset_path = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\CroppedYale_ConvertedPNG"
+image_path_save = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Negative"
+image_path_save_eyes_right = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Right"
+image_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Left"
 new_path_save = image_path_save
 
-os.mkdir(new_path_save)
+# os.mkdir(new_path_save)
 
 def scan_image(image, name):
 
@@ -37,9 +37,9 @@ def scan_image(image, name):
             continue
 
         if count == 1:
-            crop_img = image[y+10:y + winH, x+10:x + winW]
+            crop_img = image[y+10:y+10 + winH, x+10:x+10 + winW]
         elif count == 3:
-            crop_img = image[y+10:y + winH, x-10:x + winW]
+            crop_img = image[y+10:y+10 + winH, x-10:x-10 + winW]
         else:
             crop_img = image[y:y + winH, x:x + winW]
 
