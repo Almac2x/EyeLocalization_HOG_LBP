@@ -34,7 +34,15 @@ def scan_image(image, name):
         # if the window does not meet our desired window size, ignore it
         if window.shape[0] != winH or window.shape[1] != winW:
             continue
-        crop_img = image[y:y + winH, x:x + winW]
+
+        if count == 1:
+            crop_img = image[y+10:y + winH, x+10:x + winW]
+        elif count == 3:
+            crop_img = image[y+10:y + winH, x-10:x + winW]
+        else:
+            crop_img = image[y:y + winH, x:x + winW]
+
+
 
         # Writes the cropped to disk
         if count == 1 or count == 3:
