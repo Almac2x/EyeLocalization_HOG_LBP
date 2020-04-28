@@ -37,7 +37,7 @@ for imagePath in paths.list_images(args["training"]):
 
     image = cv2.imread(imagePath)
     cap2 = cv2.resize(image, (64, 64), interpolation=cv2.INTER_AREA)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(cap2, cv2.COLOR_BGR2GRAY)
     hist = desc.describe(gray,ntpath.basename(imagePath))
 
 
@@ -95,7 +95,7 @@ for train_index, test_index in kf.split(data):
 
     image = cv2.imread("images/Blando_1.jpg")
     cap2 = cv2.resize(image, (64, 64), interpolation=cv2.INTER_AREA)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(cap2, cv2.COLOR_BGR2GRAY)
     hist = desc.describe(gray, "images/patrick_bateman.jpg")
     #Test
     hist2 = hist.reshape(1,-1)
