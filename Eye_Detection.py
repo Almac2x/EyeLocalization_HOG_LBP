@@ -14,7 +14,7 @@ class Eyes:
         if Descriptor == "LBP":
             self.Model_Path = "Eye_Detection_Model/Aptina/LBP_Aptina_0.9864 _KF#2.sav"
         elif Descriptor == "HOG":
-            self.Model_Path = "Eye_Detection_Model/NewHOGnani7.sav"
+            self.Model_Path = "Eye_Detection_Model/Aptina/HOGAptinaHOG_0.958029197080292 _KF#2.sav"
 
         #Loads the model to be used
         self.loaded_model = pickle.load(open(self.Model_Path, 'rb'))
@@ -95,7 +95,7 @@ class Eyes:
 
                 elif(self.Descriptor == "HOG"):
                     Eye_Open_Confidence_Level = confidence_level[0] * 100
-                    if prediction[0] == "Eyes" :
+                    if prediction[0] == "Eye" :
                         Eye_Box_Loc.append(Box)
 
                 print(prediction[0])

@@ -16,8 +16,10 @@ from Eye_Detection import Eyes
 # Import Feature Descriptors
 from pyimagesearch.nms import non_max_suppression_fast
 
+#Change here the descriptors use
+Descriptor = "HOG"
 #Loads Eye Detector
-Eye_Detector = Eyes("HOG")
+Eye_Detector = Eyes(Descriptor)
 
 def getEyes(roi):
     #Gets eyes location into an array
@@ -78,8 +80,7 @@ startY = 0
 startX = 0
 endY = 0
 endX = 0
-#Change here the descriptors use
-Descriptor = "HOG"
+
 
 
 
@@ -161,7 +162,7 @@ while True:
             if (found_face == True):
                 # Computes Eye Locations
                 if Descriptor == "LBP":
-                    Eyes = Eye_Detector.getEyes(cv2.imread("dataset/Aptina/Eye/s0012_01282_0_0_0_0_1_03.png"))
+                    Eyes = Eye_Detector.getEyes(roi)
                 elif Descriptor == "HOG":
                     Eyes = Eye_Detector.getEyes(roi_resize)
 
