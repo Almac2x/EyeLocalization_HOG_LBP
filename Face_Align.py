@@ -24,7 +24,7 @@ FPS = 0
 
 
 while (True):
-    ret, frame = cap.read()
+    frame = img
     # Converts the Image to Greyscale
     gray_img = cv2.cvtColor(frame,cv2.COLOR_RGB2GRAY)
 
