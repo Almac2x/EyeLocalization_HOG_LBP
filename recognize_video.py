@@ -21,16 +21,6 @@ Descriptor = "HOG"
 #Loads Eye Detector
 Eye_Detector = Eyes(Descriptor)
 
-def getEyes(roi):
-    #Gets eyes location into an array
-    Eyes = Eye_Detector.getEyes(roi)
-
-    # Performs NMS to approximate boxes
-    nms = non_max_suppression_fast(Eyes, 0.3)
-    return nms
-
-
-
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -69,7 +59,7 @@ le = pickle.loads(open(args_le, "rb").read())
 # initialize the video stream, then allow the camera sensor to warm up
 print("[INFO] starting video stream...")
 input_video='test_v.mp4'
-vs = VideoStream(input_video).start()
+vs = VideoStream(0).start()
 time.sleep(2.0)
 
 # start the FPS throughput estimator
@@ -118,7 +108,7 @@ while True:
         if confidence > args["confidence"]:
             # compute the (x, y)-coordinates of the bounding box for
             # the face
-            # found_face = True
+            found_face = True
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
 
@@ -165,7 +155,7 @@ while True:
                 if Descriptor == "LBP":
                     Eyes = Eye_Detector.getEyes(roi)
                 elif Descriptor == "HOG":
-                    Eyes = Eye_Detector.getEyes(roi_resize)
+                    Eyes = Eye_Detector.getEyes(roi)
 
                 # Draws the boxes for eyes
                 nms = non_max_suppression_fast(Eyes, 0.3)

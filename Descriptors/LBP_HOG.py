@@ -5,24 +5,28 @@ from skimage.feature import hog
 from skimage import data, exposure
 import time
 import numpy as np
+from Descriptors.HOG import HOG
+from Descriptors.localbinarypatterns import LocalBinaryPatterns
 
 
 class LBP_HOG:
 
     @staticmethod
     @staticmethod
-    def __init__(image):
-        IMG = LBP_HOG.getLBPHOG(image)
+    def __init__(self,image):
+        self.image = image
+        self.Get_HOG = HOG(image)
+        self.Get_LBP = LocalBinaryPatterns(24,8)
 
-    def getLBPHOG(image_to_convert):
+    def getLBPHOG(self,image):
         start_time = time.time()
 
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        fd = hog(gray, orientations, pixels_per_cell, cells_per_block, visualize, normalize)  # HOG descriptor here.
-        hist = desc.describe(gray)  # get the LBP histogram here.
+        HOG_hist = self.Get_HOG.getHOGimage(image)
+        LBP_hist = self.Get_LBP.describe(image,"Frame")  # get the LBP histogram here.
 
+        feat = np.hstack([LBP_hist,HOG_hist])
         # print(hist)
         print("--- %s seconds to convert HOG ---" % (time.time() - start_time))
 
-        return hist
+        return feat
 
