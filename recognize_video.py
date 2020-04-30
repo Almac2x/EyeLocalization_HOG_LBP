@@ -17,7 +17,7 @@ from Eye_Detection import Eyes
 from pyimagesearch.nms import non_max_suppression_fast
 
 #Change here the descriptors use
-Descriptor = "HOG"
+Descriptor = "LBP_HOG"
 #Loads Eye Detector
 Eye_Detector = Eyes(Descriptor)
 
@@ -156,9 +156,11 @@ while True:
                     Eyes = Eye_Detector.getEyes(roi)
                 elif Descriptor == "HOG":
                     Eyes = Eye_Detector.getEyes(roi)
+                elif (Descriptor == "LBP_HOG"):
+                    Eyes = Eye_Detector.getEyes(roi)
 
                 # Draws the boxes for eyes
-                nms = non_max_suppression_fast(Eyes, 0.3)
+                nms = non_max_suppression_fast(Eyes, 0.2)
 
                 for (startX, startY, endX, endY) in nms:
                     cv2.rectangle(roi, (startX, startY), (endX, endY), (255, 0, 0), 2)

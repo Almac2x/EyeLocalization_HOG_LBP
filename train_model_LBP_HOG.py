@@ -14,7 +14,7 @@ from scipy import sparse
 
 def save_Model(model, Score, i):
     # Saves the model as a pickle
-    filename = "HOG" + str(args["name"]) + "_" + str(Score) + " _KF#" + str(i) + ".sav"
+    filename = "HOG_LBP" + str(args["name"]) + "_" + str(Score) + " _KF#" + str(i) + ".sav"
     # pickle.dump(model, open(filename, 'wb'))
     with open('Eye_Detection_Model/' + filename, 'wb') as f:
         pickle.dump(model, f)
@@ -35,6 +35,7 @@ args = vars(ap.parse_args())
 # the data and label lists
 data = []
 labels = []
+desc = LBP_HOG("bruh")
 
 # loop over the training images
 for imagePath in paths.list_images(args["dataset"]):
@@ -43,7 +44,7 @@ for imagePath in paths.list_images(args["dataset"]):
     image = cv2.imread(imagePath)
     cap2 = cv2.resize(image, (64, 64), interpolation=cv2.INTER_AREA)
     gray = cv2.cvtColor(cap2, cv2.COLOR_BGR2GRAY)
-    feat = LBP_HOG.getLBPHOG(gray)
+    feat = desc.getLBPHOG(image)
 
     # extract the label from the image path, then update the
     # label and data lists

@@ -10,18 +10,14 @@ from Descriptors.localbinarypatterns import LocalBinaryPatterns
 
 
 class LBP_HOG:
-
-    @staticmethod
-    @staticmethod
-    def __init__(self,image):
+    def __init__(self, image):
         self.image = image
-        self.Get_HOG = HOG(image)
-        self.Get_LBP = LocalBinaryPatterns(24,8)
+        self.Get_LBP = LocalBinaryPatterns(24, 8)
 
-    def getLBPHOG(self,image):
+    def getLBPHOG(self, image):
         start_time = time.time()
 
-        HOG_hist = self.Get_HOG.getHOGimage(image)
+        HOG_hist = HOG.getHOGimage(image)
         LBP_hist = self.Get_LBP.describe(image,"Frame")  # get the LBP histogram here.
 
         feat = np.hstack([LBP_hist,HOG_hist])
@@ -29,4 +25,5 @@ class LBP_HOG:
         print("--- %s seconds to convert HOG ---" % (time.time() - start_time))
 
         return feat
+
 
