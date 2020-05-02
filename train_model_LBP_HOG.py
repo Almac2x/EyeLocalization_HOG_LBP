@@ -68,10 +68,10 @@ for train_index, test_index in kf.split(data):
     y_train, y_test = np.array(labels)[train_index.astype(int)], np.array(labels)[test_index.astype(int)]
     i = i + 1
     print("KFold: " + str(i))
-    model.fit(data, labels)
+    model.fit(x_train, y_train)
 
     # Check the score of the Model
-    Score = round(model.score(x_train, y_train), 4)
+    Score = round(model.score(x_test, y_test), 4)
     print('Test Accuracy of SVC = ', Score)
     Cross_Validation_Score.append(Score)
 #
