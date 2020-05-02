@@ -160,7 +160,7 @@ while True:
                     Eyes = Eye_Detector.getEyes(roi)
 
                 # Draws the boxes for eyes
-                nms = non_max_suppression_fast(Eyes, 0.2)
+                nms = non_max_suppression_fast(Eyes, 0.3)
 
                 for (startX, startY, endX, endY) in nms:
                     cv2.rectangle(roi, (startX, startY), (endX, endY), (255, 0, 0), 2)

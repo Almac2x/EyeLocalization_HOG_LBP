@@ -73,25 +73,25 @@ kf = KFold(n_splits=int(args["splits"]), random_state=None, shuffle=False)
 Cross_Validation_Score = []
 
 i = 0
-# for train_index, test_index in kf.split(data):
-#     print("*****************************************")
-#     #print("TRAIN:", train_index, "TEST:", test_index)
-#     x_train, x_test = np.array(data)[train_index.astype(int)], np.array(data)[test_index.astype(int)]
-#     y_train, y_test = np.array(labels)[train_index.astype(int)], np.array(labels)[test_index.astype(int)]
-#     i = i + 1
-#     print("KFold: " + str(i))
-model.fit(data, labels)
-#
-#     # Check the score of the Model
-#     Score = round(model.score(x_train, y_train), 4)
-#     print('Test Accuracy of SVC = ', Score)
-#     Cross_Validation_Score.append(Score)
+for train_index, test_index in kf.split(data):
+    print("*****************************************")
+    #print("TRAIN:", train_index, "TEST:", test_index)
+    x_train, x_test = np.array(data)[train_index.astype(int)], np.array(data)[test_index.astype(int)]
+    y_train, y_test = np.array(labels)[train_index.astype(int)], np.array(labels)[test_index.astype(int)]
+    i = i + 1
+    print("KFold: " + str(i))
+    model.fit(data, labels)
+
+    # Check the score of the Model
+    Score = round(model.score(x_train, y_train), 4)
+    print('Test Accuracy of SVC = ', Score)
+    Cross_Validation_Score.append(Score)
 #
 #     # Saves the model as a pickle
-filename = "LBP_"+str(args["name"]) + "_" + " _KF#" + str(i) + ".sav"
-pickle.dump(model, open(filename, 'wb'))
-with open('Eye_Detection_Model/' + filename, 'wb') as f:
-    pickle.dump(model, f)
+    filename = "LBP_"+str(args["name"]) + "_" + " _KF#" + str(i) + ".sav"
+    pickle.dump(model, open(filename, 'wb'))
+    with open('Eye_Detection_Model/' + filename, 'wb') as f:
+        pickle.dump(model, f)
 #
 #     #Testing
 #     image = cv2.imread("images/Blando_1.jpg")
