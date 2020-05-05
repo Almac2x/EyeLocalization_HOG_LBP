@@ -11,7 +11,7 @@ class HOG:
 
     @staticmethod
     def __init__(image):
-        IMG = HOG.getLBPimage(image)
+        IMG = image
 
     def getHOGimage(image_to_convert):
         start_time = time.time()

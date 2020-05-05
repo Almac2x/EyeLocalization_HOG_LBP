@@ -16,11 +16,10 @@ from Eye_Detection import Eyes
 # Import Feature Descriptors
 from pyimagesearch.nms import non_max_suppression_fast
 
-#Change here the descriptors use
+# Change here the descriptors use
 Descriptor = "LBP_HOG"
-#Loads Eye Detector
+# Loads Eye Detector
 Eye_Detector = Eyes(Descriptor)
-
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -58,7 +57,7 @@ le = pickle.loads(open(args_le, "rb").read())
 
 # initialize the video stream, then allow the camera sensor to warm up
 print("[INFO] starting video stream...")
-input_video='test_v.mp4'
+input_video = 'test_v.mp4'
 vs = VideoStream(0).start()
 time.sleep(2.0)
 
@@ -71,10 +70,6 @@ startY = 0
 startX = 0
 endY = 0
 endX = 0
-
-
-
-
 
 # loop over frames from the video file stream
 while True:
@@ -147,7 +142,7 @@ while True:
 
             # Crops the Face
             roi = frame[startY:int(endY), startX:endX]
-            #Resizes Shape
+            # Resizes Shape
             roi_resize = cv2.resize(roi, (192, 192), interpolation=cv2.INTER_AREA)
 
             if (found_face == True):
@@ -159,12 +154,12 @@ while True:
                 elif (Descriptor == "LBP_HOG"):
                     Eyes = Eye_Detector.getEyes(roi)
 
-                # Draws the boxes for eyes
+                # Uses Non Max Suppression to average overlapping boxes
                 nms = non_max_suppression_fast(Eyes, 0.3)
 
+                # Writes each box to the region of interest (roi)
                 for (startX, startY, endX, endY) in nms:
                     cv2.rectangle(roi, (startX, startY), (endX, endY), (255, 0, 0), 2)
-
 
     # update the FPS counter
     fps.update()
@@ -175,8 +170,6 @@ while True:
         Tick = Tick + 1
         FPS = Frame_Counter
         Frame_Counter = 0
-
-
 
     # show the output frame
     cv2.imshow("Frame", frame)
