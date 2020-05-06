@@ -73,9 +73,9 @@ class Eyes:
             prediction = self.loaded_model.predict(reshape_lbp)
 
             confidence_level = self.loaded_model.decision_function(reshape_lbp)
+
             if (self.Descriptor == "LBP"):
                 Eye_Open_Confidence_Level = confidence_level[0][1] * 100
-
                 if prediction[0] == "Eye_Open" and Eye_Open_Confidence_Level > 90:
                     Eye_Box_Loc.append(Box)
 
