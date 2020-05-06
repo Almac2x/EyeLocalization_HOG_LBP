@@ -10,7 +10,7 @@ class LocalBinaryPatterns:
         self.numPoints = numPoints
         self.radius = radius
 
-    def describe(self, image, image_name, eps=1e-7):
+    def describe(self, image, eps=1e-7):
         # Initializes Time to show how long it computes
         Start_Time = time.time()
 
@@ -30,6 +30,6 @@ class LocalBinaryPatterns:
         # Initializes Time to show how long it computes
         Time_Compute = time.time() - Start_Time
 
-        print("--- {}s seconds to convert {} to LBP ---".format(Time_Compute, image_name))
+        print("--- {}s seconds to convert {} to LBP ---".format(Time_Compute))
         # return the histogram of Local Binary Patterns
         return hist

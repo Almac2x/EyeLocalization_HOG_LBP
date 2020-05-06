@@ -18,7 +18,7 @@ class LBP_HOG:
         start_time = time.time()
 
         HOG_hist = HOG.getHOGimage(image)
-        LBP_hist = self.Get_LBP.describe(image,"Frame")  # get the LBP histogram here.
+        LBP_hist = self.Get_LBP.describe(image)  # get the LBP histogram here.
 
         feat = np.hstack([LBP_hist, HOG_hist])
         # print(hist)
