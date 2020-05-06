@@ -18,7 +18,7 @@ class Eyes:
         elif Descriptor == "HOG":
             self.Model_Path = "Eye_Detection_Model/Aptina/HOGAptinaHOG_0.958029197080292 _KF#2.sav"
         elif Descriptor == "LBP_HOG":
-            self.Model_Path = "Eye_Detection_Model/Aptina/LBP_HOG_1classOnly_0.930498020804566__KF2.sav"
+            self.Model_Path = "Eye_Detection_Model/LBP_HOGTEST_HOGLBP_0.8567614839362975__KF2.sav"
         # Loads the model to be used
         self.loaded_model = pickle.load(open(self.Model_Path, 'rb'))
 
@@ -37,14 +37,8 @@ class Eyes:
         elif (self.Descriptor == "LBP_HOG"):
             desc = LBP_HOG("bruh")
 
-        # Write a place to put
-        # image_path = "Test_Create_Dataset/"
-        # if not os.path.isdir(image_path):
-        #   os.mkdir(image_path)
-
         # Converts to BGR2GRAY
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        # count = 1
 
         # loop over the image pyramid
         # for resized in pyramid(image, scale=1.5):
@@ -61,15 +55,6 @@ class Eyes:
             crop_img = gray[y:y + winH, x:x + winW]
 
             Box = [x, y, x + winW, y + winH]
-            # IMG_Copy = resized.copy()
-
-            # Writes the cropped to disk
-            # cv2.imwrite('%s/%s.png' % (image_path, count), crop_img)
-            # print("image save")
-            # count += 1
-            # See how it slides
-            # cv2.rectangle(IMG_Copy, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
-            # cv2.imshow("Window", IMG_Copy)
 
             # THIS IS WHERE YOU WOULD PROCESS YOUR WINDOW, SUCH AS APPLYING A
             # MACHINE LEARNING CLASSIFIER TO CLASSIFY THE CONTENTS OF THE
@@ -106,20 +91,5 @@ class Eyes:
 
             print(prediction[0])
             print(Eye_Open_Confidence_Level)
-
-            # print("Status: ".format(prediction[0]))
-            # print("Eye_Open Confidenve Level: {:.2f}".format(Eye_Open_Confidence_Level))
-            # print("Confidence Level: {}".format(confidence_level))
-
-            # display the image and the prediction
-            # XY = (x, y + winH)
-            # cv2.putText(image, prediction[0], XY, cv2.FONT_HERSHEY_SIMPLEX,
-            #           1.0, (0, 0, 255), 3)
-
-            # Wait Key for Show
-            # cv2.imshow("cropped", crop_img)
-            # cv2.waitKey(0)
-
-        # cv2.destroyAllWindows()
 
         return np.array(Eye_Box_Loc)

@@ -33,7 +33,7 @@ args_detector = "face_detection_model"
 args_embedding_model = "openface_nn4.small2.v1.t7"
 args_recognizer = "output/recognizer.pickle"
 args_le = "output/le.pickle"
-args_image = "images/Pili_3.jpg"
+args_image = "images/Blando_1.jpg"
 #Change here the descriptors use
 Descriptor = "LBP_HOG"
 

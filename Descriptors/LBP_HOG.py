@@ -20,7 +20,7 @@ class LBP_HOG:
         HOG_hist = HOG.getHOGimage(image)
         LBP_hist = self.Get_LBP.describe(image,"Frame")  # get the LBP histogram here.
 
-        feat = np.hstack([LBP_hist,HOG_hist])
+        feat = np.hstack([LBP_hist, HOG_hist])
         # print(hist)
         print("--- %s seconds to convert HOG ---" % (time.time() - start_time))
 
