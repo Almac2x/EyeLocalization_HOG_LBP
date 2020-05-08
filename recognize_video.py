@@ -20,7 +20,7 @@ from pyimagesearch.nms import non_max_suppression_fast
 Descriptor = "LBP_HOG"
 # Loads Eye Detector
 Eye_Detector = Eyes(Descriptor)
-
+z
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--detector", required=False,

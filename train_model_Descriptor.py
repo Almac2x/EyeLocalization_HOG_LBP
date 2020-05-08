@@ -12,7 +12,7 @@ from imutils import paths
 import argparse
 import cv2
 import os
-import pickle, statistics
+import pickle
 import numpy as np
 import ntpath
 
@@ -30,8 +30,7 @@ args = vars(ap.parse_args())
 
 # initialize the local binary patterns descriptor along with
 # the data and label lists
-desc_LBP = LocalBinaryPatterns(24, 8)
-desc_HOG = HOG()
+desc_LBP = LocalBinaryPatterns()
 desc_LBP_HOG = LBP_HOG("bruh")
 
 data = []
@@ -46,9 +45,9 @@ for imagePath in paths.list_images(args["training"]):
     gray = cv2.cvtColor(cap2, cv2.COLOR_BGR2GRAY)
 
     if args["model"] == "LBP":
-        desc = desc_LBP.describe(gray, ntpath.basename(imagePath))
+        desc = desc_LBP.describe(gray)
     elif args["model"] == "HOG":
-        desc = desc_HOG.getHOGimage(gray)
+        desc = HOG.getHOGimage(gray)
     elif args["model"] == "LBP_HOG":
         desc = desc_LBP_HOG.getLBPHOG(gray)
 

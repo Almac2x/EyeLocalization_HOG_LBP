@@ -28,12 +28,18 @@ class Eyes:
         # Initializes box array to store eye locations
         Eye_Box_Loc = []
 
+        EyeBlob = cv2.dnn.blobFromImage(image, 1.0 / 255,
+                                         (96, 96), (0, 0, 0), swapRB=True, crop=False)
+        embedder.setInput(EyeBlob)
+        vec = embedder.forward()
+
+
         # load the image and define the window width and height
         (winW, winH) = (64, 64)
 
         if (self.Descriptor == "LBP"):
             # initialize the local binary patterns descriptor along with
-            desc = LocalBinaryPatterns(24, 8)
+            desc = LocalBinaryPatterns(8, 2)
         elif (self.Descriptor == "LBP_HOG"):
             desc = LBP_HOG("bruh")
 
@@ -71,7 +77,7 @@ class Eyes:
             # Loads Prediction Model
             reshape_lbp = hist.reshape(1, -1)
             prediction = self.loaded_model.predict(reshape_lbp)
-
+            self.loaded_model.classes
             confidence_level = self.loaded_model.decision_function(reshape_lbp)
 
             if (self.Descriptor == "LBP"):
