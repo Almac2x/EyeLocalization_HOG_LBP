@@ -120,12 +120,12 @@ roi = image[startY:int(endY), startX:endX]
 roi_resize = cv2.resize(roi, (192, 192), interpolation=cv2.INTER_AREA)
 
 # Computes Eye Locations
-if(Descriptor == "LBP"):
+if Descriptor == "LBP":
     Eyes = Eye_Detector.getEyes(roi_resize)
-elif(Descriptor == "HOG"):
+elif Descriptor == "HOG":
     cv2.imshow("Nani",roi)
     Eyes = Eye_Detector.getEyes(roi)
-elif(Descriptor == "LBP_HOG"):
+elif Descriptor == "LBP_HOG":
     cv2.imshow("Nani",roi)
     Eyes = Eye_Detector.getEyes(roi)
 

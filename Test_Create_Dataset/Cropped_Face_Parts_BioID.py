@@ -11,7 +11,7 @@ from imutils import paths
 from pyimagesearch.helpers import pyramid, sliding_window
 
 # load the image and define the window width and height
-(winW, winH) = (64, 64)
+(winW, winH) = (54, 54)
 
 # Change Dataset
 dataset_path = r"D:\Chrome Downloads\Thesis Downloads\BioID\PNG"
@@ -24,7 +24,7 @@ image_path_eyes_loc = r"D:\Chrome Downloads\Thesis Downloads\BioID\EyePoints\\"
 for imagePath in paths.list_images(dataset_path):
 
     # Initializes Eye Location Array
-    Eye_loc = np.array([])
+    Eye_loc = []
 
     # Gets the image name of
     image_name = os.path.splitext(imagePath.split(os.path.sep)[-1])[0]
@@ -36,14 +36,26 @@ for imagePath in paths.list_images(dataset_path):
     eye_loc_file = open(image_path_eyes_loc + image_name + ".eye", "r")
     eye_loc_string = eye_loc_file.read()
 
-    result = eye_loc_string.split("\t")
+    #Splits file to array
+    result = eye_loc_string.split()
 
-    print(result)
+    #Eye Starting Location
+    Lx = int(result[4])
+    Ly = int(result[5])
+    Rx = int(result[6])
+    Ry = int(result[7])
+    # Inserts Left Eye Loc
+    Eye_loc.extend([[Lx, Ly, Lx + winW, Ly + winH]])
+    # Inserts Left Eye Loc
+    #Eye_loc.extend([[Rx, Ry, Rx + winW, Ry + winH]])
+
+
+    print(Eye_loc)
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # loop over the bounding boxes for each image and draw them
-    for (startX, startY, endX, endY) in Eye_loc:
+    for (startX, startY, endX, endY) in np.array(Eye_loc):
         cv2.rectangle(gray, (startX, startY), (endX, endY), (0, 255, 0), 2)
 
     cv2.imshow("Face", gray)
