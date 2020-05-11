@@ -33,7 +33,7 @@ args_detector = "face_detection_model"
 args_embedding_model = "openface_nn4.small2.v1.t7"
 args_recognizer = "output/recognizer.pickle"
 args_le = "output/le.pickle"
-args_image = "images/Blando_1.jpg"
+args_image = "images/Pili_1.jpg"
 #Change here the descriptors use
 Descriptor = "LBP_HOG"
 
@@ -127,7 +127,7 @@ elif Descriptor == "HOG":
     Eyes = Eye_Detector.getEyes(roi)
 elif Descriptor == "LBP_HOG":
     cv2.imshow("Nani",roi)
-    Eyes = Eye_Detector.getEyes(roi)
+    Eyes = Eye_Detector.getEyes(roi_resize)
 
 # Draws the boxes for eyes
 nms = non_max_suppression_fast(Eyes, 0.1)

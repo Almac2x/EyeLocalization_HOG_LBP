@@ -76,6 +76,7 @@ for train_index, test_index in kf.split(data):
 
     # Check the score of the Model
     Score = round(model.score(x_test, y_test), 4)
+    print(Score)
     print('Test Accuracy of SVC = ', Score)
     Cross_Validation_Score.append(Score)
     #

@@ -18,7 +18,7 @@ class Eyes:
         elif Descriptor == "HOG":
             self.Model_Path = "Eye_Detection_Model/Aptina/HOGAptinaHOG_0.958029197080292 _KF#2.sav"
         elif Descriptor == "LBP_HOG":
-            self.Model_Path = "Eye_Detection_Model/LBP_HOGTEST_HOGLBP_0.8567614839362975__KF2.sav"
+            self.Model_Path = "LBP_HOG_LBP_reTrained_ _KF#1.sav"
         # Loads the model to be used
         self.loaded_model = pickle.load(open(self.Model_Path, 'rb'))
 
@@ -77,7 +77,7 @@ class Eyes:
             # Loads Prediction Model
             reshape_lbp = hist.reshape(1, -1)
             prediction = self.loaded_model.predict(reshape_lbp)
-            self.loaded_model.classes
+            # self.loaded_model.classes
             confidence_level = self.loaded_model.decision_function(reshape_lbp)
 
             if (self.Descriptor == "LBP"):
@@ -87,7 +87,7 @@ class Eyes:
 
             elif (self.Descriptor == "HOG"):
                 Eye_Open_Confidence_Level = confidence_level[0] * 100
-                if prediction[0] == "Eye":
+                if prediction[0] == "Eyes":
                     Eye_Box_Loc.append(Box)
 
             elif self.Descriptor == "LBP_HOG":
