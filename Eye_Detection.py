@@ -28,10 +28,10 @@ class Eyes:
         # Initializes box array to store eye locations
         Eye_Box_Loc = []
 
-        EyeBlob = cv2.dnn.blobFromImage(image, 1.0 / 255,
-                                         (96, 96), (0, 0, 0), swapRB=True, crop=False)
-        embedder.setInput(EyeBlob)
-        vec = embedder.forward()
+        # EyeBlob = cv2.dnn.blobFromImage(image, 1.0 / 255,
+        #                                  (96, 96), (0, 0, 0), swapRB=True, crop=False)
+        # embedder.setInput(EyeBlob)
+        # vec = embedder.forward()
 
 
         # load the image and define the window width and height
@@ -39,7 +39,7 @@ class Eyes:
 
         if (self.Descriptor == "LBP"):
             # initialize the local binary patterns descriptor along with
-            desc = LocalBinaryPatterns(8, 2)
+            desc = LocalBinaryPatterns()
         elif (self.Descriptor == "LBP_HOG"):
             desc = LBP_HOG("bruh")
 
@@ -68,7 +68,7 @@ class Eyes:
 
             # Describes the image
             if (self.Descriptor == "LBP"):
-                hist = desc.describe(crop_img, "Frame")
+                hist = desc.describe(crop_img)
             elif (self.Descriptor == "HOG"):
                 hist = HOG.getHOGimage(crop_img)
             elif self.Descriptor == "LBP_HOG":
