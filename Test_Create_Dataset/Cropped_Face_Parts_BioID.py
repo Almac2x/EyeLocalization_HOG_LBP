@@ -6,6 +6,7 @@ import pickle, statistics
 import numpy as np
 import ntpath
 
+from Face_Detection import Face_Detection
 from imutils import paths
 
 from pyimagesearch.helpers import pyramid, sliding_window
@@ -20,6 +21,8 @@ image_path_save_eyes_right = r"D:\Chrome Downloads\Thesis Downloads\BioID\Eyes\E
 image_path_save_eyes_left = r"D:\Chrome Downloads\Thesis Downloads\BioID\Eyes\Eyes_Left"
 image_path_eyes_loc = r"D:\Chrome Downloads\Thesis Downloads\BioID\EyePoints\\"
 # image_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Left"
+
+Face_Detection = Face_Detection()
 
 
 for imagePath in paths.list_images(dataset_path):
@@ -52,7 +55,13 @@ for imagePath in paths.list_images(dataset_path):
 
     print(Eye_loc)
 
+    #Converts Image to Gray
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #Gets the images Face Location
+    Face_Loc = Face_Detection.getFace(gray)
+
+    cv2.imshow("Face Detection",Face_Loc)
+
 
     # Crops Left and Right Eye
     crop_img_left_eye = gray[Eye_loc[0][1]:Eye_loc[0][3], Eye_loc[0][0]:Eye_loc[0][2]]

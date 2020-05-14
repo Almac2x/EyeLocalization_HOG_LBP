@@ -18,15 +18,20 @@ import ntpath
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-t", "--training", required=True,
+ap.add_argument("-t", "--training", required=False,
                 help="path to the training images")
-ap.add_argument("-n", "--name", required=True,
+ap.add_argument("-n", "--name", required=False,
                 help="name of the model to be saved")
-ap.add_argument("-s", "--splits", required=True,
+ap.add_argument("-s", "--splits", required=False,
                 help="number of splits for KFold")
-ap.add_argument("-m", "--model", required=True,
+ap.add_argument("-m", "--model", required=False,
                 help="what kind of model to train (LBP, HOG, LBP_HOG)")
 args = vars(ap.parse_args())
+
+args["name"] = "LBP_HOG"
+args["splits"] = "3"
+args["model"] = "LBP_HOG"
+args["training"]= r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\YaleB"
 
 # initialize the local binary patterns descriptor along with
 # the data and label lists
@@ -57,33 +62,37 @@ for imagePath in paths.list_images(args["training"]):
     data.append(desc)
 
 # train a Linear SVM on the data
-model = LinearSVC(C=100.0, random_state=42)
+model = LinearSVC(C=100.0, random_state=42,dual=False)
+model.fit(data,labels)
 
-# KFold
-kf = KFold(n_splits=int(args["splits"]), random_state=None, shuffle=False)
-Cross_Validation_Score = []
-
-# For each KFOLD will be trained and save
-i = 0
-for train_index, test_index in kf.split(data):
-    print("*****************************************")
-    # print("TRAIN:", train_index, "TEST:", test_index)
-    x_train, x_test = np.array(data)[train_index.astype(int)], np.array(data)[test_index.astype(int)]
-    y_train, y_test = np.array(labels)[train_index.astype(int)], np.array(labels)[test_index.astype(int)]
-    i = i + 1
-    print("KFold: " + str(i))
-    model.fit(x_train, y_train)
-
-    print(x_test)
-
-    # Check the score of the Model
-    Score = round(model.score(x_test, y_test), 4)
-    print(Score)
-    print('Test Accuracy of SVC = ', Score)
-    Cross_Validation_Score.append(Score)
-    #
-    #     # Saves the model as a pickle
-    filename = "LBP_" + str(args["name"]) + "_" + " _KF#" + str(i) + ".sav"
-    pickle.dump(model, open(filename, 'wb'))
-    with open('Eye_Detection_Model/' + filename, 'wb') as f:
+ #Saves the model as a pickle
+filename = "LBP_" + str(args["name"]) + "_" + " _KF#" + str(1) + ".sav"
+pickle.dump(model, open(filename, 'wb'))
+with open('Eye_Detection_Model/' + filename, 'wb') as f:
         pickle.dump(model, f)
+# KFold
+# kf = KFold(n_splits=int(args["splits"]), random_state=None, shuffle=False)
+# Cross_Validation_Score = []
+#
+# # For each KFOLD will be trained and save
+# i = 0
+# for train_index, test_index in kf.split(data):
+#     print("*****************************************")
+#     # print("TRAIN:", train_index, "TEST:", test_index)
+#     x_train, x_test = np.array(data)[train_index.astype(int)], np.array(data)[test_index.astype(int)]
+#     y_train, y_test = np.array(labels)[train_index.astype(int)], np.array(labels)[test_index.astype(int)]
+#     i = i + 1
+#     print("KFold: " + str(i))
+#     model.fit(x_train, y_train)
+#
+#     # Check the score of the Model
+#     Score = round(model.score(x_test, y_test), 4)
+#     print(Score)
+#     print('Test Accuracy of SVC = ', Score)
+#     Cross_Validation_Score.append(Score)
+#     #
+#     #     # Saves the model as a pickle
+#     filename = "LBP_" + str(args["name"]) + "_" + " _KF#" + str(i) + ".sav"
+#     pickle.dump(model, open(filename, 'wb'))
+#     with open('Eye_Detection_Model/' + filename, 'wb') as f:
+#         pickle.dump(model, f)
