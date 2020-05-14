@@ -74,6 +74,8 @@ for train_index, test_index in kf.split(data):
     print("KFold: " + str(i))
     model.fit(x_train, y_train)
 
+    print(x_test)
+
     # Check the score of the Model
     Score = round(model.score(x_test, y_test), 4)
     print(Score)

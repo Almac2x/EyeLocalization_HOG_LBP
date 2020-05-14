@@ -18,7 +18,7 @@ class Eyes:
         elif Descriptor == "HOG":
             self.Model_Path = "Eye_Detection_Model/Aptina/HOGAptinaHOG_0.958029197080292 _KF#2.sav"
         elif Descriptor == "LBP_HOG":
-            self.Model_Path = "LBP_HOG_LBP_reTrained_ _KF#1.sav"
+            self.Model_Path = "Eye_Detection_Model/LBP_HOG_LBP_reTrained___KF1.sav"
         # Loads the model to be used
         self.loaded_model = pickle.load(open(self.Model_Path, 'rb'))
 
