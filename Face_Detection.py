@@ -13,6 +13,7 @@ class Face_Detection:
         # store the number of points and radiusx
         self.numPoints = 8
         self.radius = 2
+
         self.args_detector = "face_detection_model"
         self.args_embedding_model = "openface_nn4.small2.v1.t7"
         self.args_recognizer = "output/recognizer.pickle"
@@ -20,11 +21,11 @@ class Face_Detection:
         self.args_confidence = "90"
 
         print("[INFO] loading face detector...")
-        self.protoPath = os.path.sep.join([self.args_detector, "deploy.prototxt"])
+        protoPath = r"face_detection_model/deploy.prototxt"
         self.modelPath = os.path.sep.join([self.args_detector,
                                       "res10_300x300_ssd_iter_140000.caffemodel"])
 
-        self.detector = cv2.dnn.readNetFromCaffe(self.protoPath, self.modelPath)
+        self.detector = cv2.dnn.readNetFromCaffe(protoPath, self.modelPath)
 
         # load our serialized face embedding model from disk
         print("[INFO] loading face recognizer...")
@@ -37,6 +38,7 @@ class Face_Detection:
 
     def getFace(self,Image):
 
+        #Face ARRAY
         Faces = []
 
         # load the image, resize it to have a width of 600 pixels (while
@@ -99,7 +101,10 @@ class Face_Detection:
                 cv2.putText(image, text, (startX, y),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
+                roi = image[startY:int(endY), startX:endX]
+                Faces.append(roi)
 
-        return image
+        print("Big PP")
+        return Faces
 
 

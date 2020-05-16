@@ -15,11 +15,11 @@ from pyimagesearch.helpers import pyramid, sliding_window
 (winW, winH) = (24, 24-10)
 
 # Change Dataset
-dataset_path = r"D:\Chrome Downloads\Thesis Downloads\BioID\PNG"
+dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_Face"
 image_path_save = r"D:\Chrome Downloads\Thesis Downloads\BioID\Negative"  # Negative
-image_path_save_eyes_right = r"D:\Chrome Downloads\Thesis Downloads\BioID\Eyes\Eyes_Right"
-image_path_save_eyes_left = r"D:\Chrome Downloads\Thesis Downloads\BioID\Eyes\Eyes_Left"
-image_path_eyes_loc = r"D:\Chrome Downloads\Thesis Downloads\BioID\EyePoints\\"
+image_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Right_Eye"
+image_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Left_Eye"
+image_path_eyes_loc = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Eye_Loc\\"
 # image_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Left"
 
 Face_Detection = Face_Detection()
@@ -60,7 +60,8 @@ for imagePath in paths.list_images(dataset_path):
     #Gets the images Face Location
     Face_Loc = Face_Detection.getFace(gray)
 
-    cv2.imshow("Face Detection",Face_Loc)
+
+
 
 
     # Crops Left and Right Eye
