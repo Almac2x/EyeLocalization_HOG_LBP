@@ -15,11 +15,11 @@ from pyimagesearch.helpers import pyramid, sliding_window
 (winW, winH) = (24, 24-10)
 
 # Change Dataset
-dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_Face"
+dataset_path = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\BioID_Converted_PNG"
 image_path_save = r"D:\Chrome Downloads\Thesis Downloads\BioID\Negative"  # Negative
-image_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Right_Eye"
-image_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Left_Eye"
-image_path_eyes_loc = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Eye_Loc\\"
+image_path_save_eyes_right = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Right"
+image_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Left"
+image_path_eyes_loc = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\BioID-FD-Eyepos-V1.2\\"
 # image_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Left"
 
 Face_Detection = Face_Detection()
@@ -53,16 +53,19 @@ for imagePath in paths.list_images(dataset_path):
     # Inserts Left Eye Loc
     Eye_loc.extend([[Rx - winW, Ry - winH, Rx + winW, Ry + winH]])
 
-    print(Eye_loc)
 
 
     #Gets the images Face Location
     Face_Loc = Face_Detection.getFace(image)
+    # for box in Face_Loc:
+    if len(Face_Loc)==4:
+        (startX, startY, endX, endY) = Face_Loc.astype("int")
+        cv2.rectangle(image, (startX, startY), (endX, endY),
+                      (0, 0, 255), 2)
 
-    for (startX, startY, endX, endY) in Face_Loc:
-        cv2.putText(image, "Nani", (startX, y),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
+    else:
+        print("No face Detected")
     # Crops Left and Right Eye
     crop_img_left_eye = image[Eye_loc[0][1]:Eye_loc[0][3], Eye_loc[0][0]:Eye_loc[0][2]]
 
