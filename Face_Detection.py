@@ -14,26 +14,27 @@ class Face_Detection:
         self.numPoints = 8
         self.radius = 2
 
-        self.args_detector = "face_detection_model"
-        self.args_embedding_model = "openface_nn4.small2.v1.t7"
-        self.args_recognizer = "output/recognizer.pickle"
-        self.args_le = "output/le.pickle"
-        self.args_confidence = "90"
+        args_detector = "face_detection_model"
+        args_embedding_model = "openface_nn4.small2.v1.t7"
+        args_recognizer = "output/recognizer.pickle"
+        args_le = "output/le.pickle"
+        self.args_confidence = 90
 
         print("[INFO] loading face detector...")
         protoPath = r"face_detection_model/deploy.prototxt"
-        self.modelPath = os.path.sep.join([self.args_detector,
+        modelPath = os.path.sep.join([args_detector,
                                       "res10_300x300_ssd_iter_140000.caffemodel"])
 
-        self.detector = cv2.dnn.readNetFromCaffe(protoPath, self.modelPath)
+        self.detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
         # load our serialized face embedding model from disk
-        print("[INFO] loading face recognizer...")
-        self.embedder = cv2.dnn.readNetFromTorch(self.args_embedding_model)
+
+        self.embedder = cv2.dnn.readNetFromTorch(args_embedding_model)
 
         # load the actual face recognition model along with the label encoder
-        self.recognizer = pickle.loads(open(self.args_recognizer, "rb").read())
-        self.le = pickle.loads(open(self.args_le, "rb").read())
+        self.recognizer = pickle.loads(open(args_recognizer, "rb").read())
+        self.le = pickle.loads(open(args_le, "rb").read())
+        print("[INFO] loading face recognizer...")
 
 
     def getFace(self,Image):
@@ -43,7 +44,6 @@ class Face_Detection:
 
         # load the image, resize it to have a width of 600 pixels (while
         # maintaining the aspect ratio), and then grab the image dimensions
-
         image = imutils.resize(Image, width=600)
         (h, w) = image.shape[:2]  # Aspect Ratio
 
@@ -102,9 +102,9 @@ class Face_Detection:
                             cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
                 roi = image[startY:int(endY), startX:endX]
-                Faces.append(roi)
+                Faces.append(box)
 
-        print("Big PP")
+
         return Faces
 
 

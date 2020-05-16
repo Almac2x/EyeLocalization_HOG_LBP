@@ -55,19 +55,18 @@ for imagePath in paths.list_images(dataset_path):
 
     print(Eye_loc)
 
-    #Converts Image to Gray
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
     #Gets the images Face Location
-    Face_Loc = Face_Detection.getFace(gray)
+    Face_Loc = Face_Detection.getFace(image)
 
-
-
-
+    for (startX, startY, endX, endY) in Face_Loc:
+        cv2.putText(image, "Nani", (startX, y),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
     # Crops Left and Right Eye
-    crop_img_left_eye = gray[Eye_loc[0][1]:Eye_loc[0][3], Eye_loc[0][0]:Eye_loc[0][2]]
+    crop_img_left_eye = image[Eye_loc[0][1]:Eye_loc[0][3], Eye_loc[0][0]:Eye_loc[0][2]]
 
-    crop_img_right_eye = gray[Eye_loc[1][1]:Eye_loc[1][3], Eye_loc[1][0]:Eye_loc[1][2]]
+    crop_img_right_eye = image[Eye_loc[1][1]:Eye_loc[1][3], Eye_loc[1][0]:Eye_loc[1][2]]
 
     ## loop over the bounding boxes for each image and draw them
    # for (startX, startY, endX, endY) in np.array(Eye_loc):
@@ -84,6 +83,6 @@ for imagePath in paths.list_images(dataset_path):
 
     cv2.imshow("Left_Eye", crop_img_left_eye)
     cv2.imshow("Right_Eye", crop_img_right_eye)
-    cv2.imshow("Face", gray)
+    cv2.imshow("Face", image)
     cv2.waitKey(0)
 
