@@ -60,15 +60,25 @@ def scan_image(image, name, new_path_save,image_path_save_eyes_right,image_path_
 (winW, winH) = (24, 24-10)
 
 # Change Dataset
-dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_Face"
+# dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_Face"
+# image_path_save = r"D:\Chrome Downloads\Thesis Downloads\BioID\Negative"  # Negative
+# image_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Right_Eye"
+# image_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Left_Eye"
+# image_path_eyes_loc = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Eye_Loc\\"
+#
+# sliding_image_save_neg = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_SlidingWindow\Negative"
+# sliding_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_SlidingWindow\Eye_Right"
+# sliding_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_SlidingWindow\Eye_Left"
+
+dataset_path = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\BioID_Converted_PNG"
 image_path_save = r"D:\Chrome Downloads\Thesis Downloads\BioID\Negative"  # Negative
-image_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Right_Eye"
-image_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Left_Eye"
-image_path_eyes_loc = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Eye_Loc\\"
+image_path_save_eyes_right = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Right"
+image_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Left"
+image_path_eyes_loc = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\BioID-FD-Eyepos-V1.2\\"
 
 sliding_image_save_neg = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_SlidingWindow\Negative"
-sliding_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_SlidingWindow\Eye_Right"
-sliding_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\BioID\Bio_ID_SlidingWindow\Eye_Left"
+sliding_path_save_eyes_right = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Right"
+sliding_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Left"
 
 # image_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Test_Create_Dataset\Eyes_Left"
 
@@ -87,36 +97,35 @@ for imagePath in paths.list_images(dataset_path):
     print("Image Path: {} \n Image Height: {} \n Image Width: {} ".format(image_name,
                                                                           image.shape[0], image.shape[1]))
     # rea
-    eye_loc_file = open(image_path_eyes_loc + image_name + ".eye", "r")
-    eye_loc_string = eye_loc_file.read()
+    # eye_loc_file = open(image_path_eyes_loc + image_name + ".eye", "r")
+    # eye_loc_string = eye_loc_file.read()
 
     # Splits file to array
-    result = eye_loc_string.split()
+    # result = eye_loc_string.split()
 
     # Eye Starting Location
-    Lx = int(result[4])
-    Ly = int(result[5])
-    Rx = int(result[6])
-    Ry = int(result[7])
+    # Lx = int(result[4])
+    # Ly = int(result[5])
+    # Rx = int(result[6])
+    # Ry = int(result[7])
     # Inserts Left Eye Loc
-    Eye_loc.extend([[Lx - winW, Ly - winH, Lx + (winW), Ly + winH]])
-    # Inserts Left Eye Loc
-    Eye_loc.extend([[Rx - winW, Ry - winH, Rx + winW, Ry + winH]])
+    # Eye_loc.extend([[Lx - winW, Ly - winH, Lx + (winW), Ly + winH]])
+    # # Inserts Left Eye Loc
+    # Eye_loc.extend([[Rx - winW, Ry - winH, Rx + winW, Ry + winH]])
 
-    print(Eye_loc)
+    # print(Eye_loc)
 
 
     #Gets the images Face Location
     Face_Loc = Face_Detection.getFace(image)
 
-    (startX, startY, endX, endY) = Face_Loc.astype("int")
-
     if len(Face_Loc) == 4:
-        cv2.rectangle(image, (startX, startY), (endX, endY),
+        (startX, startY, endX, endY) = Face_Loc.astype("int")
+        cv2.rectangle(image, (startX, startY+40), (endX, endY),
                       (0, 0, 255), 2)
 
         # Perform Sliding Window
-        roi = image[startY:int(endY), startX:endX]
+        roi = image[startY+40:int(endY), startX:endX]
         roi_resize = roi_resize = cv2.resize(roi, (192, 192), interpolation=cv2.INTER_AREA)
 
         scan_image(roi_resize, image_name, sliding_image_save_neg, sliding_path_save_eyes_right,
@@ -127,21 +136,21 @@ for imagePath in paths.list_images(dataset_path):
 
 
     # Crops Left and Right Eye
-    crop_img_left_eye = image[Eye_loc[0][1]:Eye_loc[0][3], Eye_loc[0][0]:Eye_loc[0][2]]
-
-    crop_img_right_eye = image[Eye_loc[1][1]:Eye_loc[1][3], Eye_loc[1][0]:Eye_loc[1][2]]
+    # crop_img_left_eye = image[Eye_loc[0][1]:Eye_loc[0][3], Eye_loc[0][0]:Eye_loc[0][2]]
+    #
+    # crop_img_right_eye = image[Eye_loc[1][1]:Eye_loc[1][3], Eye_loc[1][0]:Eye_loc[1][2]]
 
 
 
     # Writes left and Right eye
-    cv2.imwrite('%s/%s.png' % (image_path_save_eyes_right, image_name + "_right"), crop_img_right_eye)
-    print("image save to" + image_path_save_eyes_right)
+    # cv2.imwrite('%s/%s.png' % (image_path_save_eyes_right, image_name + "_right"), crop_img_right_eye)
+    # print("image save to" + image_path_save_eyes_right)
+    #
+    # cv2.imwrite('%s/%s.png' % (image_path_save_eyes_left, image_name + "_left"), crop_img_left_eye)
+    # print("image save to" + image_path_save_eyes_right)
 
-    cv2.imwrite('%s/%s.png' % (image_path_save_eyes_left, image_name + "_left"), crop_img_left_eye)
-    print("image save to" + image_path_save_eyes_right)
-
-    cv2.imshow("Left_Eye", crop_img_left_eye)
-    cv2.imshow("Right_Eye", crop_img_right_eye)
+    # cv2.imshow("Left_Eye", crop_img_left_eye)
+    # cv2.imshow("Right_Eye", crop_img_right_eye)
     cv2.imshow("Face", image)
 
     cv2.waitKey(0)
