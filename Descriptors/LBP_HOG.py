@@ -5,6 +5,7 @@ from skimage.feature import hog
 from skimage import data, exposure
 import time
 import numpy as np
+import csv
 from Descriptors.HOG import HOG
 from Descriptors.localbinarypatterns import LocalBinaryPatterns
 
@@ -14,15 +15,19 @@ class LBP_HOG:
         self.image = image
         self.Get_LBP = LocalBinaryPatterns()
 
-    def getLBPHOG(self, image):
-        start_time = time.time()
+    def getLBPHOG(self, image, file_name, frame):
+        with open(file_name+'_Descriptor_RunTime_LBPHOG.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
 
-        HOG_hist = HOG.getHOGimage(image)
-        LBP_hist = self.Get_LBP.describe(image)  # get the LBP histogram here.
+            start_time = time.time()
 
-        feat = np.hstack([LBP_hist, HOG_hist])
+            HOG_hist = HOG.getHOGimage(image, file_name, frame)
+            LBP_hist = self.Get_LBP.describe(image, file_name, frame)  # get the LBP histogram here.
 
-        print("--- %s seconds to convert LBP_HOG ---" % (time.time() - start_time))
+            feat = np.hstack([LBP_hist, HOG_hist])
+            elapse_time = (time.time() - start_time)
+            writer.writerow([frame, elapse_time])
+            print("--- %s seconds to convert LBP_HOG ---" % elapse_time)
 
         return feat
 

@@ -151,7 +151,7 @@ for imagePath in paths.list_images(dataset_path):
 
     # cv2.imshow("Left_Eye", crop_img_left_eye)
     # cv2.imshow("Right_Eye", crop_img_right_eye)
-    cv2.imshow("Face", image)
-
-    cv2.waitKey(0)
+    # cv2.imshow("Face", image)
+    #
+    # cv2.waitKey(0)
 

@@ -2,7 +2,7 @@
 from skimage import feature
 import numpy as np
 import time
-
+import csv
 
 class LocalBinaryPatterns:
     def __init__(self):
@@ -10,20 +10,22 @@ class LocalBinaryPatterns:
         self.numPoints = 8
         self.radius = 2
 
-    def describe(self, image):
+    def describe(self, image, file_name, frame):
         # Initializes Time to show how long it computes
-        Start_Time = time.time()
-        eps = 1e-7
-        # compute the Local Binary Pattern representation
-        # of the image, and then use the LBP representation
-        # to build the histogram of patterns
-        lbp = feature.local_binary_pattern(image, self.numPoints,
+        with open(file_name+'_Descriptor_RunTime_LBP.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            Start_Time = time.time()
+            # compute the Local Binary Pattern representation
+            # of the image, and then use the LBP representation
+            # to build the histogram of patterns
+            lbp = feature.local_binary_pattern(image, self.numPoints,
                                            self.radius, method="uniform")
-        n_bins = int(lbp.max() + 1)
-        hist, _ = np.histogram(lbp.ravel(), density=True, bins=n_bins, range=(0, n_bins))
+            n_bins = int(lbp.max() + 1)
+            hist, _ = np.histogram(lbp.ravel(), density=True, bins=n_bins, range=(0, n_bins))
 
-        # Initializes Time to show how long it computes
-        Time_Compute = time.time() - Start_Time
-        print("--- {}s seconds to convert LBP ---".format(Time_Compute))
+            # Initializes Time to show how long it computes
+            Time_Compute = time.time() - Start_Time
+            writer.writerow([frame, Time_Compute])
+            print("--- {} seconds to convert LBP ---".format(Time_Compute))
         # return the histogram of Local Binary Patterns
         return hist
