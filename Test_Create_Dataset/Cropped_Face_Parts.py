@@ -16,19 +16,16 @@ from pyimagesearch.helpers import pyramid, sliding_window
 (winW, winH) = (64, 64)
 
 # Change Dataset
-dataset_path = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\CroppedYale_ConvertedPNG"
-image_path_save = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Negative"
-image_path_save_eyes_right = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Eyes_Right"
-image_path_save_eyes_left = r"D:\Documents\Chrome Downloads\Thesis Download\Datasets\Yale_No_Blacks\Eyes_Left"
+dataset_path = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\CroppedYale_ConvertedPNG"
+image_path_save = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Yale\Negative"
+image_path_save_eyes_right = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Yale\Eyes_Right"
+image_path_save_eyes_left = r"C:\Users\Pili\PycharmProjects\EyeLocalization_HOG_LBP\Yale\Eyes_Left"
 new_path_save = image_path_save
+
 
 # os.mkdir(new_path_save)
 
 def scan_image(image, name):
-
-
-
-
     # loop over the image pyramid
     count = 1
     for (x, y, window) in sliding_window(image, stepSize=64, windowSize=(winW, winH)):
@@ -37,13 +34,11 @@ def scan_image(image, name):
             continue
 
         if count == 1:
-            crop_img = image[y+10:y+10 + winH, x+10:x+10 + winW]
+            crop_img = image[y + 10:y + 10 + winH, x + 10:x + 10 + winW]
         elif count == 3:
-            crop_img = image[y+10:y+10 + winH, x-10:x-10 + winW]
+            crop_img = image[y + 10:y + 10 + winH, x - 10:x - 10 + winW]
         else:
             crop_img = image[y:y + winH, x:x + winW]
-
-
 
         # Writes the cropped to disk
         if count == 1:
@@ -59,10 +54,10 @@ def scan_image(image, name):
 
         # Shows How Sliding windows works
         count += 1
-        #clone = image.copy()
-        #cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 255), 2)
-        #cv2.imshow("Window", clone)
-        #cv2.waitKey(0)
+        # clone = image.copy()
+        # cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 255, 255), 2)
+        # cv2.imshow("Window", clone)
+        # cv2.waitKey(0)
 
 
 data = []
@@ -80,8 +75,6 @@ for imagePath in paths.list_images(dataset_path):
     gray = cv2.cvtColor(resize, cv2.COLOR_BGR2GRAY)
 
     scan_image(gray, os.path.splitext(imagePath.split(os.path.sep)[-1])[0])
-
-
 
     # extract the label from the image path, then update the
     # label and data lists
