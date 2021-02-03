@@ -1,12 +1,10 @@
 # import the necessary packages
-import numpy as np
-import argparse
-import imutils
+import os
 import pickle
+
 import cv2
-import os, time, pickle
-from pyimagesearch.nms import non_max_suppression_fast
-from Eye_Detection import Eyes
+import numpy as np
+
 
 class Face_Detection:
     def __init__(self):
@@ -14,14 +12,14 @@ class Face_Detection:
         self.numPoints = 8
         self.radius = 2
 
-        args_detector = "face_detection_model"
-        args_embedding_model = "openface_nn4.small2.v1.t7"
-        args_recognizer = "output/recognizer.pickle"
-        args_le = "output/le.pickle"
+        args_detector = "Face_Detection_Model"
+        args_embedding_model = "Process/openface_nn4.small2.v1.t7"
+        args_recognizer = "Process/recognizer.pickle"
+        args_le = "Process/le.pickle"
         self.args_confidence = .9
 
         print("[INFO] loading face detector...")
-        protoPath = r"face_detection_model/deploy.prototxt"
+        protoPath = r"Face_Detection_Model/deploy.prototxt"
         modelPath = os.path.sep.join([args_detector,
                                       "res10_300x300_ssd_iter_140000.caffemodel"])
 

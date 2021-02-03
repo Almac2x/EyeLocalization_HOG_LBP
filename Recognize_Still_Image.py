@@ -1,5 +1,5 @@
 # USAGE Website From: https://www.pyimagesearch.com/2018/09/24/opencv-face-recognition/
-# python recognize.py --detector face_detection_model --embedding-model openface_nn4.small2.v1.t7 --recognizer output/recognizer.pickle --le output/le.pickle --image images/adrian.jpg
+# python Recognize_Still_Image.py --detector Face_Detection_Model --embedding-model openface_nn4.small2.v1.t7 --recognizer Process/recognizer.pickle --le Process/le.pickle --image images/adrian.jpg
 
 # import the necessary packages
 import numpy as np
@@ -29,10 +29,10 @@ ap.add_argument("-c", "--confidence", type=float, default=0.5,
                 help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
-args_detector = "face_detection_model"
+args_detector = "Face_Detection_Model"
 args_embedding_model = "openface_nn4.small2.v1.t7"
-args_recognizer = "output/recognizer.pickle"
-args_le = "output/le.pickle"
+args_recognizer = "Process/recognizer.pickle"
+args_le = "Process/le.pickle"
 args_image = "images/Blando_1.jpg"
 #Change here the descriptors use
 Descriptor = "LBP_HOG"
@@ -146,7 +146,7 @@ for (startX, startY, endX, endY) in nms:
 #    cv2.rectangle(image, (sx, sy), (ex, ey), (0, 255, 0), 2)
 
 
-# show the output image
+# show the Process image
 cv2.imshow("Image", image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

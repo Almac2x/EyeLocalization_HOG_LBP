@@ -1,10 +1,7 @@
-# Website https://www.pyimagesearch.com/2015/03/23/sliding-windows-for-object-detection-with-python-and-opencv/
-
-import cv2, pickle, os
-
+import cv2, pickle
 from Descriptors.LBP_HOG import LBP_HOG
-from Descriptors.localbinarypatterns import LocalBinaryPatterns
-from pyimagesearch.helpers import pyramid, sliding_window
+from Descriptors.LBP import LBP
+from pyimagesearch.helpers import sliding_window
 from Descriptors.HOG import HOG
 import numpy as np
 import csv
@@ -15,11 +12,11 @@ class Eyes:
         # Chooses what descriptor to use
         self.Descriptor = Descriptor
         if Descriptor == "LBP":
-            self.Model_Path = "LBP_CopyPaste_0.0 _KF#2.sav"
+            self.Model_Path = "Eye_Detection_Model/LBP_3_KFOLD_0.8426 _KF#2.sav"
         elif Descriptor == "HOG":
-            self.Model_Path = "HOG_CopyPaste_0.0 _KF#2.sav"
+            self.Model_Path = "Eye_Detection_Model/HOG_3_KFOLD_0.778 _KF#2.sav"
         elif Descriptor == "LBP_HOG":
-            self.Model_Path = "LBP_HOG_CopyPaste_0.0 _KF#2.sav"
+            self.Model_Path = "Eye_Detection_Model/LBPHOG_3_KFOLD_0.852 _KF#1.sav"
 
     def getEyes(self, image, file_name, frame):
         # Loads the model to be used
@@ -29,19 +26,14 @@ class Eyes:
         # Initializes box array to store eye locations
         Eye_Box_Loc = []
 
-        # EyeBlob = cv2.dnn.blobFromImage(image, 1.0 / 255,
-        #                                  (96, 96), (0, 0, 0), swapRB=True, crop=False)
-        # embedder.setInput(EyeBlob)
-        # vec = embedder.forward()
-
         # load the image and define the window width and height
         (winW, winH) = (64, 64)
 
         if self.Descriptor == "LBP":
             # initialize the local binary patterns descriptor along with
-            desc = LocalBinaryPatterns()
+            desc = LBP()
         elif self.Descriptor == "LBP_HOG":
-            desc = LBP_HOG("bruh")
+            desc = LBP_HOG("Run")
 
         # Converts to BGR2GRAY
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -63,10 +55,6 @@ class Eyes:
                 crop_img = gray[y:y + winH, x:x + winW]
                 Box = [x, y, x + winW, y + winH]
 
-                # THIS IS WHERE YOU WOULD PROCESS YOUR WINDOW, SUCH AS APPLYING A
-                # MACHINE LEARNING CLASSIFIER TO CLASSIFY THE CONTENTS OF THE
-                # WINDOW
-
                 # Describes the image
                 if (self.Descriptor == "LBP"):
                     hist = desc.describe(crop_img, file_name, frame)
@@ -76,24 +64,24 @@ class Eyes:
                     hist = desc.getLBPHOG(crop_img, file_name, frame)
 
                 # Loads Prediction Model
-                reshape_lbp = hist.reshape(1, -1)
-                prediction = loaded_model.predict(reshape_lbp)
+                reshape_Desc = hist.reshape(1, -1)
+                prediction = loaded_model.predict(reshape_Desc)
                 # self.loaded_model.classes
-                confidence_level = loaded_model.decision_function(reshape_lbp)
+                confidence_level = loaded_model.decision_function(reshape_Desc)
 
-                if (self.Descriptor == "LBP"):
+                if self.Descriptor == "LBP":
                     Eye_Open_Confidence_Level = confidence_level[0] * 100
-                    if prediction[0] == "Eyes_Left" or prediction[0] == "Eyes_Right" or prediction[0] == "Eye":
+                    if prediction[0] == "Eyes_Left" or prediction[0] == "Eyes_Right":
                         Eye_Box_Loc.append(Box)
 
-                elif (self.Descriptor == "HOG"):
+                elif self.Descriptor == "HOG":
                     Eye_Open_Confidence_Level = confidence_level[0] * 100
-                    if prediction[0] == "Eyes_Left" or prediction[0] == "Eyes_Right" or prediction[0] == "Eye":
+                    if prediction[0] == "Eyes_Left" or prediction[0] == "Eyes_Right":
                         Eye_Box_Loc.append(Box)
 
                 elif self.Descriptor == "LBP_HOG":
                     Eye_Open_Confidence_Level = confidence_level[0] * 100
-                    if prediction[0] == "Eyes_Left" or prediction[0] == "Eyes_Right" or prediction[0] == "Eye":
+                    if prediction[0] == "Eyes_Left" or prediction[0] == "Eyes_Right":
                         Eye_Box_Loc.append(Box)
 
                 print(prediction[0])
@@ -103,3 +91,16 @@ class Eyes:
             writer.writerow([frame_number, Elapse_Time])
 
         return np.array(Eye_Box_Loc)
+
+
+
+
+
+
+
+
+
+
+
+
+
